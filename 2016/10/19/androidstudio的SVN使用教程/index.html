@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="林嘘嘘的博客">
+    <meta name="keyword" content="null">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="I Love You" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        androidstudio的SVN使用教程｜Lin&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://linsixu.github.io/2016/10/19/androidstudio的SVN使用教程/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/321.JPG')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    I Love You
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="nullhttp://of90sai8w.bkt.clouddn.com/hello2.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('nullhttp://of90sai8w.bkt.clouddn.com/hello2.png?imageView2/2/w/100/h/100/interlace/0/q/100')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>androidstudio的SVN使用教程</h1>
+                    
+                    <span class="meta">
+                         作者 Lin Wait For Li
+                        <span>
+                          日期 2016-10-19
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                        <a class="tag" href="/tags/#android开发"
+                           title="android开发">android开发</a>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            androidstudio的SVN使用教程
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h1 id="从官网下载一个TortoiseSVN"><a href="#从官网下载一个TortoiseSVN" class="headerlink" title="从官网下载一个TortoiseSVN"></a>从官网下载一个TortoiseSVN</h1><p>运行TortoiseSVN程序，点击Next，下面的截图顺序即为安装步骤：<br>图1：<br><img src="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_third.png" alt="TortoiseSVN_first"></p>
+<p>然后到了显示时候红色部分是默认不安装的，你们要点击那个小三角形，不安装的话就没有svn.exe应用程序，下面studio也就添加不了。安装途径可以选择你自己喜欢的。<br>图2：<br><img src="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_second.png" alt="TortoiseSVN_second"></p>
+<p>接下来按照流程走完就可以了，如图3和图4<br><img src="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_third.png" alt="TortoiseSVN_third"><br>！<a href="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_four.png" target="_blank" rel="external">TortoiseSVN_four</a></p>
+<h2 id="Androidstudio中配置SVN"><a href="#Androidstudio中配置SVN" class="headerlink" title="Androidstudio中配置SVN"></a>Androidstudio中配置SVN</h2><ol>
+<li><p>在Androidstudio关联SVN<br>Android Studio关联配置SVN很简单，在Settings里面，找到Version Control-&gt;Subversion；在这个页面的控制面板中的General中将Use command line client打勾勾选上，然后浏览本地的SVN安装目录，选到”\svn.exe”即可；<br>在Use command line client下面还有一个Use system default Subversion configuration directory，这个默认是勾选上上的，这个是svn相关配置信息的路径，保留默认路径就行，目前没有发现需要修改什么东西；以上操作如下图：<br><img src="http://of90sai8w.bkt.clouddn.com/SVN_first.png" alt="SVN_first"></p>
+</li>
+<li><p>Android Studio项目关联SVN资源库及添加忽略文件:<br>在Android Studio中新创建一个Android项目，成功后我们先来添加要忽略的文件；在Android Studio中添加忽略文件同Eclipse有所不同，在Eclipse上我们什么时候添加忽略文件都可以，但是在Android Studio中只有在未关联SVN之前添加忽略文件才有效（试了好多次才将忽略文件忽略成功啊！）。Android Studio添加忽略文件同样是在Settings-&gt;Version Control（跟版本控制有关的设置都在这个目录下）下的Ignored Files里，点击加号进行忽略文件的设置，Android Studio默认给出了三种忽略方式，供开发者进行选择：忽略指定的文件、忽略文件夹下所有文件和忽略符合匹配规则的文件；如图所示：<br><img src="http://of90sai8w.bkt.clouddn.com/SVN_second.png" alt="SVN_second"><br>点击右侧的“+”进行添加，“-”删除；Android Studio创建的Android项目一般需要忽略.idea文件夹、.gradle文件夹、所有的build文件夹(包括app文件夹里面的build文件夹)、所有的.xml文件及local.properties（选择第一个Ignore special file就可以看见了）文件。</p>
+</li>
+<li><p>忽略完文件后，我们进行项目同SVN的关联:<br>选择VCS-&gt;Import into Version Control-&gt;Share Project(Subversion)；这里说明一点，在Import into Version Control下有Import into Subversion和Share Project(Subversion）两个选项：第一个是直接将项目导入到SVN服务器上，但是这样做本地的项目同SVN服务器没有建立起关联，在导入后项目所有的文件都会变成红色，而且在要提交到SVN服务器时会提示项目不是SVN下的工作副本；第二个是将Android Studio当前项目同SVN服务器关联起来，但是并没有将项目导入到SVN服务器上，需要在完成建立连接后再次提交项目到SVN服务器。两种方式都可以实现将本地代码提交到SVN服务器的功能，但是步骤有所不同，先来完成第二种方式的项目同SVN的关联及代码提交，第一种貌似不正规，之后再说；下图既是第二种方式将本地项目同SVN进行关联的：<br>之后会弹出选择要分享的SVN地址及其他选项，如下图：<br><img src="http://of90sai8w.bkt.clouddn.com/SVN_third.png" alt="SVN_third"></p>
+</li>
+</ol>
+<p>在Define share target下选择第二个可以再trunk下创建你当前项目的文件夹，相应的第一个选项是直接将整个文件都放到trunk文件夹下，第三个在项目文件夹下有创建了一个trunk文件夹，因此建议使用第二中方式；选择完成后点击Share就可以了，会弹出让你选择SVN工作副本的格式化版本（jdk版本），如下图:<br><img src="http://of90sai8w.bkt.clouddn.com/svn_four.png" alt="svn_four"></p>
+<p>建议选择1.8format，我之前选择了其他的试了一下，发现项目总会报出一下错误，原因暂时未发现，就先这样选择吧；点击OK等待一会就能创建本地项目同SVN服务器的关联了；成功后悔自动刷新本地的项目，待项目里的内容变成绿色的即表示已经成功了，如下图所示：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_fifth.png" alt="svn_fifth"></p>
+<p>到目前为止只是将项目同SVN服务器建立了联系，并没有将代码提交到SVN服务器上去；如何提交呢，其实很简单，只需点击SVN相关操作按钮里的commit就行了（上图SVN相关操作按钮左起第二个按钮）；<br><img src="http://of90sai8w.bkt.clouddn.com/svn_six.png" alt="svn_six"></p>
+<p>点击Commit后Android Studio会先对当前代码进代码分析，如果有错误或者警告会弹出如下的框，如果有错误冲突等需要解决后再提交，如果是警告可以忽略（同Eclipse相同）；第一次将整个代码提交到SVN服务器时时间有可能很长(长达一个小时)，请耐心等待，之后再创建项目时就不会这么慢了。<br><img src="http://of90sai8w.bkt.clouddn.com/svn_seven.png" alt="svn_seven"></p>
+<p>成功后我们就完成了新建项目同SVN的关联及导入项目到SVN服务器上了。<br>关于第一种方式，在将本地代码导入到SVN服务器后将本地代码删除，然后从SVN服务器上将之前提交的代码更新下来，这样一来也可以同SVN建立关联正常进行开发；第一种方式和第二种方式的区别就在于：第一种是将代码先提交到SVN服务器上，然后再从SVN服务器上更新下来（本地项目同SVN服务器建立联系）；第二种是先同SVN服务器监理联系，然后将代码提交到SVN服务器上去。建议使用第二种方式进行新项目的SVN关联。</p>
+<h3 id="Android-Studio-SVN代码冲突的解决"><a href="#Android-Studio-SVN代码冲突的解决" class="headerlink" title="Android Studio SVN代码冲突的解决:"></a>Android Studio SVN代码冲突的解决:</h3><p>在使用SVN更新服务器上的代码时，有时会弹出代码冲突的对话框，问你是否进行合并，并提供了三种合并方案：accept yours(使用你的)、accept theirs(使用别人的)和merge(合并),如图；<br><img src="http://of90sai8w.bkt.clouddn.com/svn_eight.png" alt="svn_eight"></p>
+<p>前两个都是进行的覆盖操作，就不多做解释了；当你选择merge合并时，会弹出代码合并对照窗口，一共有三个屏，左右两侧时你和服务器不同的代码并高亮显示不同的部分，带有箭头和叉号，通过点击箭头将两边冲突的代码添加到中间的合并区域中去，点击叉号则辨识放弃那一段代码，待所有冲突处理完成后merge就成功了.如图：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_nine.png" alt="svn_nine"></p>
+<h4 id="如何从SVN上下载项目"><a href="#如何从SVN上下载项目" class="headerlink" title="如何从SVN上下载项目:"></a>如何从SVN上下载项目:</h4><ol>
+<li><p>打开你的androids选择VSC -&gt; Checkout from Version Control -&gt; Subversion,如图所示：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_first.png" alt="svn_download_first"></p>
+</li>
+<li><p>选择VCS中的Checkout from Version Control里面的Subversion<br>然后选择你SVN子目录里面的项目文件,如图：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_second.png" alt="svn_download_second"></p>
+</li>
+<li><p>然后弹出来的窗口都还存放的地址（存放的文件夹名字最好和项目名字一样，要不然它会修改你项目名字）,如图：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_third.png" alt="svn_download_third"></p>
+</li>
+<li><p>点击OK后出现：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_four.png" alt="svn_download_four"></p>
+</li>
+<li><p>选择第一个（你自己创建的文件夹），与你项目名字一样的。点击OK后出现这个，选择1.8:<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_fifth.png" alt="svn_download_fifth"></p>
+</li>
+<li><p>点击OK，最下面出现检查：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_six.png" alt="svn_download_six"></p>
+</li>
+<li><p>检测完成后弹出：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_seven.png" alt="svn_download_seven"></p>
+</li>
+<li><p>点击YES。然后弹出来的窗口如下面所示，别选择第一个，第一个意思是下载一个Gradle，你选择第一个就会和我一样悲剧的等半个小时都是不行的，选择Use default gradle wapper下面一个，用你本地的gradle，然后就大致OK了<br>正确选择(选择了Use local gradle distribution)：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_true.png" alt="svn_download_true"></p>
+</li>
+</ol>
+<p>错误选择(选择了Use default gradle wrapper选项):<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_false.png" alt="svn_download_false"></p>
+<ol>
+<li>正确选择之后会进入一个下载进度条：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_eight.png" alt="svn_download_eight"></li>
+</ol>
+<p>如果加载过程中突然出现如下错误，你就把能本地能正常运行的项目的<strong>local.properties</strong>复制到刚刚的路径当中，用studio再次打开就可以了。<br>报错图如下：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_nine.png" alt="svn_download_nine"></p>
+<p>以上就是我使用的经验，如果缺漏请大家体谅</p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/10/18/hello-world/" data-toggle="tooltip" data-placement="top"
+                           title="Hello World">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从官网下载一个TortoiseSVN"><span class="toc-text">从官网下载一个TortoiseSVN</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Androidstudio中配置SVN"><span class="toc-text">Androidstudio中配置SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-Studio-SVN代码冲突的解决"><span class="toc-text">Android Studio SVN代码冲突的解决:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#如何从SVN上下载项目"><span class="toc-text">如何从SVN上下载项目:</span></a></li></ol></li></ol></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#android开发"
+                           title="android开发">android开发</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; I Love You 2016
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://linsixu.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/1234444.PNG">
+</body>
+
+</html>
