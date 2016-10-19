@@ -119,14 +119,13 @@
 <!--only post-->
 
 
-<img class="wechat-title-img"
-     src="nullhttp://of90sai8w.bkt.clouddn.com/android_title.png">
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/android_title.png">
 
 
 <style>
     
     header.intro-header {
-        background-image: url('nullhttp://of90sai8w.bkt.clouddn.com/android_title.png?imageView2/2/w/100/h/100/interlace/0/q/100')
+        background-image: url('http://of90sai8w.bkt.clouddn.com/android_title.png');
     }
 
     
@@ -171,7 +170,7 @@
                 <h1 id="从官网下载一个TortoiseSVN"><a href="#从官网下载一个TortoiseSVN" class="headerlink" title="从官网下载一个TortoiseSVN"></a>从官网下载一个TortoiseSVN</h1><p>运行TortoiseSVN程序，点击Next，下面的截图顺序即为安装步骤：<br>图1：<br><img src="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_third.png" alt="TortoiseSVN_first"></p>
 <p>然后到了显示时候红色部分是默认不安装的，你们要点击那个小三角形，不安装的话就没有svn.exe应用程序，下面studio也就添加不了。安装途径可以选择你自己喜欢的。<br>图2：<br><img src="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_second.png" alt="TortoiseSVN_second"></p>
 <p>接下来按照流程走完就可以了，如图3和图4<br><img src="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_third.png" alt="TortoiseSVN_third"><br>！<a href="http://of90sai8w.bkt.clouddn.com/TortoiseSVN_four.png" target="_blank" rel="external">TortoiseSVN_four</a></p>
-<h2 id="Androidstudio中配置SVN"><a href="#Androidstudio中配置SVN" class="headerlink" title="Androidstudio中配置SVN"></a>Androidstudio中配置SVN</h2><ol>
+<h1 id="Androidstudio中配置SVN"><a href="#Androidstudio中配置SVN" class="headerlink" title="Androidstudio中配置SVN"></a>Androidstudio中配置SVN</h1><ol>
 <li><p>在Androidstudio关联SVN<br>Android Studio关联配置SVN很简单，在Settings里面，找到Version Control-&gt;Subversion；在这个页面的控制面板中的General中将Use command line client打勾勾选上，然后浏览本地的SVN安装目录，选到”\svn.exe”即可；<br>在Use command line client下面还有一个Use system default Subversion configuration directory，这个默认是勾选上上的，这个是svn相关配置信息的路径，保留默认路径就行，目前没有发现需要修改什么东西；以上操作如下图：<br><img src="http://of90sai8w.bkt.clouddn.com/SVN_first.png" alt="SVN_first"></p>
 </li>
 <li><p>Android Studio项目关联SVN资源库及添加忽略文件:<br>在Android Studio中新创建一个Android项目，成功后我们先来添加要忽略的文件；在Android Studio中添加忽略文件同Eclipse有所不同，在Eclipse上我们什么时候添加忽略文件都可以，但是在Android Studio中只有在未关联SVN之前添加忽略文件才有效（试了好多次才将忽略文件忽略成功啊！）。Android Studio添加忽略文件同样是在Settings-&gt;Version Control（跟版本控制有关的设置都在这个目录下）下的Ignored Files里，点击加号进行忽略文件的设置，Android Studio默认给出了三种忽略方式，供开发者进行选择：忽略指定的文件、忽略文件夹下所有文件和忽略符合匹配规则的文件；如图所示：<br><img src="http://of90sai8w.bkt.clouddn.com/SVN_second.png" alt="SVN_second"><br>点击右侧的“+”进行添加，“-”删除；Android Studio创建的Android项目一般需要忽略.idea文件夹、.gradle文件夹、所有的build文件夹(包括app文件夹里面的build文件夹)、所有的.xml文件及local.properties（选择第一个Ignore special file就可以看见了）文件。</p>
@@ -184,9 +183,9 @@
 <p>到目前为止只是将项目同SVN服务器建立了联系，并没有将代码提交到SVN服务器上去；如何提交呢，其实很简单，只需点击SVN相关操作按钮里的commit就行了（上图SVN相关操作按钮左起第二个按钮）；<br><img src="http://of90sai8w.bkt.clouddn.com/svn_six.png" alt="svn_six"></p>
 <p>点击Commit后Android Studio会先对当前代码进代码分析，如果有错误或者警告会弹出如下的框，如果有错误冲突等需要解决后再提交，如果是警告可以忽略（同Eclipse相同）；第一次将整个代码提交到SVN服务器时时间有可能很长(长达一个小时)，请耐心等待，之后再创建项目时就不会这么慢了。<br><img src="http://of90sai8w.bkt.clouddn.com/svn_seven.png" alt="svn_seven"></p>
 <p>成功后我们就完成了新建项目同SVN的关联及导入项目到SVN服务器上了。<br>关于第一种方式，在将本地代码导入到SVN服务器后将本地代码删除，然后从SVN服务器上将之前提交的代码更新下来，这样一来也可以同SVN建立关联正常进行开发；第一种方式和第二种方式的区别就在于：第一种是将代码先提交到SVN服务器上，然后再从SVN服务器上更新下来（本地项目同SVN服务器建立联系）；第二种是先同SVN服务器监理联系，然后将代码提交到SVN服务器上去。建议使用第二种方式进行新项目的SVN关联。</p>
-<h3 id="Android-Studio-SVN代码冲突的解决"><a href="#Android-Studio-SVN代码冲突的解决" class="headerlink" title="Android Studio SVN代码冲突的解决:"></a>Android Studio SVN代码冲突的解决:</h3><p>在使用SVN更新服务器上的代码时，有时会弹出代码冲突的对话框，问你是否进行合并，并提供了三种合并方案：accept yours(使用你的)、accept theirs(使用别人的)和merge(合并),如图；<br><img src="http://of90sai8w.bkt.clouddn.com/svn_eight.png" alt="svn_eight"></p>
+<h1 id="Android-Studio-SVN代码冲突的解决"><a href="#Android-Studio-SVN代码冲突的解决" class="headerlink" title="Android Studio SVN代码冲突的解决:"></a>Android Studio SVN代码冲突的解决:</h1><p>在使用SVN更新服务器上的代码时，有时会弹出代码冲突的对话框，问你是否进行合并，并提供了三种合并方案：accept yours(使用你的)、accept theirs(使用别人的)和merge(合并),如图；<br><img src="http://of90sai8w.bkt.clouddn.com/svn_eight.png" alt="svn_eight"></p>
 <p>前两个都是进行的覆盖操作，就不多做解释了；当你选择merge合并时，会弹出代码合并对照窗口，一共有三个屏，左右两侧时你和服务器不同的代码并高亮显示不同的部分，带有箭头和叉号，通过点击箭头将两边冲突的代码添加到中间的合并区域中去，点击叉号则辨识放弃那一段代码，待所有冲突处理完成后merge就成功了.如图：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_nine.png" alt="svn_nine"></p>
-<h4 id="如何从SVN上下载项目"><a href="#如何从SVN上下载项目" class="headerlink" title="如何从SVN上下载项目:"></a>如何从SVN上下载项目:</h4><ol>
+<h1 id="如何从SVN上下载项目"><a href="#如何从SVN上下载项目" class="headerlink" title="如何从SVN上下载项目:"></a>如何从SVN上下载项目:</h1><ol>
 <li><p>打开你的androids选择VSC -&gt; Checkout from Version Control -&gt; Subversion,如图所示：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_first.png" alt="svn_download_first"></p>
 </li>
 <li><p>选择VCS中的Checkout from Version Control里面的Subversion<br>然后选择你SVN子目录里面的项目文件,如图：<br><img src="http://of90sai8w.bkt.clouddn.com/svn_download_second.png" alt="svn_download_second"></p>
@@ -227,7 +226,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从官网下载一个TortoiseSVN"><span class="toc-text">从官网下载一个TortoiseSVN</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Androidstudio中配置SVN"><span class="toc-text">Androidstudio中配置SVN</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Android-Studio-SVN代码冲突的解决"><span class="toc-text">Android Studio SVN代码冲突的解决:</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#如何从SVN上下载项目"><span class="toc-text">如何从SVN上下载项目:</span></a></li></ol></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从官网下载一个TortoiseSVN"><span class="toc-text">从官网下载一个TortoiseSVN</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Androidstudio中配置SVN"><span class="toc-text">Androidstudio中配置SVN</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Android-Studio-SVN代码冲突的解决"><span class="toc-text">Android Studio SVN代码冲突的解决:</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#如何从SVN上下载项目"><span class="toc-text">如何从SVN上下载项目:</span></a></li></ol>
                 </div>
             </div>
         </div>
