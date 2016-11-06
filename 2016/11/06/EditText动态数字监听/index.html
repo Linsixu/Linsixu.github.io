@@ -188,6 +188,14 @@
 </ol>
 <p>话不多说，直接上实现功能的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">private int txt_content = 0;//先声明一个变量记录输入的内容个数</div><div class="line">editText.addTextChangedListener(new TextWatcher() &#123;</div><div class="line">		@Override</div><div class="line">		public void beforeTextChanged(CharSequence s, int start, int count, int after) &#123;</div><div class="line">			txt_content = start + after;//获取内容变化前总体内容个数</div><div class="line">				if(input_length &gt;= 0)&#123;</div><div class="line">					input_length = MAX_INPUT - txt_content;</div><div class="line">				&#125;</div><div class="line">				LogUtils.i(getClass().getName(),&quot;beforeTextChanged=&quot;+start+&quot;,after=&quot;+after+&quot;,count=&quot;+count);</div><div class="line">			&#125;</div><div class="line">			@Override</div><div class="line">			public void onTextChanged(CharSequence s, int start, int before, int count) &#123;</div><div class="line">				if(count != 0)&#123;</div><div class="line">					txt_content = count + txt_content;</div><div class="line">				&#125;</div><div class="line">				if(before != 0)&#123;</div><div class="line">					txt_content = txt_content - before;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			@Override</div><div class="line">			public void afterTextChanged(Editable s) &#123;</div><div class="line">				txt_input_number.setText(input_length+&quot;/140&quot;);</div><div class="line">			&#125;</div><div class="line">		&#125;);</div></pre></td></tr></table></figure></p>
 <p>最后你还需要在EdiTText的xml属性中添加<strong>android:maxLength=”MAX_Input”</strong>,这样就大功告成了。</p>
+<h2 id="效果图："><a href="#效果图：" class="headerlink" title="效果图："></a>效果图：</h2><ol>
+<li><p>没有输入任何内容之前：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_one.png" alt="edit_one"></p>
+</li>
+<li><p>输入内容以后：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_two.png" alt="edit_two"></p>
+</li>
+<li><p>删除内容后：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_third.png" alt="edit_third"></p>
+</li>
+</ol>
 
                 <hr>
                 
@@ -210,7 +218,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初步了解EdiTText的方法addTextChangedListener"><span class="toc-text">初步了解EdiTText的方法addTextChangedListener</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深入了解addTextChangedListener里面的属性"><span class="toc-text">深入了解addTextChangedListener里面的属性</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初步了解EdiTText的方法addTextChangedListener"><span class="toc-text">初步了解EdiTText的方法addTextChangedListener</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深入了解addTextChangedListener里面的属性"><span class="toc-text">深入了解addTextChangedListener里面的属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图："><span class="toc-text">效果图：</span></a></li></ol>
                 </div>
             </div>
         </div>
