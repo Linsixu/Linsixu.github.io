@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        EditText动态数字监听｜Lin&#39;s blog
+        EditText动态内容监听｜Lin&#39;s blog
         
     </title>
 
@@ -137,7 +137,7 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>EditText动态数字监听</h1>
+                    <h1>EditText动态内容监听</h1>
                     
                     <span class="meta">
                          作者 Lin Wait For Li
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            EditText动态数字监听
+            EditText动态内容监听
         </span>
     </div>
 </header>
@@ -166,7 +166,7 @@
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
                 <p>最近在做一个项目过程中需要一种能提醒用户还能输入多少个字体的EditText，因为在直接用getText().length()时候出现输入一个字体时候还是显示0,所以想把自己实现的功能代码写下来可以以后用上：</p>
-<h2 id="初步了解EdiTText的方法addTextChangedListener"><a href="#初步了解EdiTText的方法addTextChangedListener" class="headerlink" title="初步了解EdiTText的方法addTextChangedListener"></a>初步了解EdiTText的方法<strong>addTextChangedListener</strong></h2><ol>
+<h2 id="初步了解addTextChangedListener方法"><a href="#初步了解addTextChangedListener方法" class="headerlink" title="初步了解addTextChangedListener方法"></a>初步了解<strong>addTextChangedListener</strong>方法</h2><ol>
 <li><p><strong>public void beforeTextChanged(CharSequence s, int start, int count, int after)</strong> ：<br>这个方法是在EditText内容改变之前调用的方法.</p>
 </li>
 <li><p><strong>public void onTextChanged(CharSequence s, int start, int before, int count)</strong> ：<br>这个方法是在EditText内容改变过程中调用的方法.</p>
@@ -174,13 +174,13 @@
 <li><p><strong>public void afterTextChanged(Editable s)</strong> :<br>这个方法是在EdiTText内容改变完成后调用的. </p>
 </li>
 </ol>
-<h2 id="深入了解addTextChangedListener里面的属性"><a href="#深入了解addTextChangedListener里面的属性" class="headerlink" title="深入了解addTextChangedListener里面的属性"></a>深入了解<strong>addTextChangedListener</strong>里面的属性</h2><p>###. <strong>public void beforeTextChanged(CharSequence s, int start, int count, int after)</strong> ：<br>里面有start属性、count属性、after属性。</p>
+<h2 id="深入了解addTextChangedListener里面的属性"><a href="#深入了解addTextChangedListener里面的属性" class="headerlink" title="深入了解addTextChangedListener里面的属性"></a>深入了解<strong>addTextChangedListener</strong>里面的属性</h2><h3 id="深入了解beforeTextChanged方法参数"><a href="#深入了解beforeTextChanged方法参数" class="headerlink" title="深入了解beforeTextChanged方法参数"></a>深入了解beforeTextChanged方法参数</h3><p><strong>public void beforeTextChanged(CharSequence s, int start, int count, int after)</strong>有start属性、count属性、after属性。</p>
 <ol>
 <li>其中start属性是变化前内容的个数。但是对于你增加一个数字来说start属性代表着没输入新内容的个数；对于减法而言start属性代表着你已经删除字体后内容的个数</li>
 <li>count属性是你按×删除掉内容字体的个数.</li>
 <li>after属性是新增加内容的个体数.</li>
 </ol>
-<p>###. <strong>public void onTextChanged(CharSequence s, int start, int before, int count)</strong> ：<br>里面有start属性、before属性、count属性。</p>
+<h3 id="深入了解onTextChanged方法参数"><a href="#深入了解onTextChanged方法参数" class="headerlink" title="深入了解onTextChanged方法参数"></a>深入了解onTextChanged方法参数</h3><p><strong>public void onTextChanged(CharSequence s, int start, int before, int count)</strong>中有start属性、before属性、count属性。</p>
 <ol>
 <li>其中start属性是变化前内容的个数。但是对于你增加一个数字来说start属性代表着没输入新内容的个数；对于减法而言start属性代表着你已经删除字体后内容的个数</li>
 <li>count属性是是增加内容后的个数与增加内容钱的个数的差值.</li>
@@ -188,7 +188,7 @@
 </ol>
 <p>话不多说，直接上实现功能的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">private int txt_content = 0;//先声明一个变量记录输入的内容个数</div><div class="line">editText.addTextChangedListener(new TextWatcher() &#123;</div><div class="line">		@Override</div><div class="line">		public void beforeTextChanged(CharSequence s, int start, int count, int after) &#123;</div><div class="line">			txt_content = start + after;//获取内容变化前总体内容个数</div><div class="line">				if(input_length &gt;= 0)&#123;</div><div class="line">					input_length = MAX_INPUT - txt_content;</div><div class="line">				&#125;</div><div class="line">				LogUtils.i(getClass().getName(),&quot;beforeTextChanged=&quot;+start+&quot;,after=&quot;+after+&quot;,count=&quot;+count);</div><div class="line">			&#125;</div><div class="line">			@Override</div><div class="line">			public void onTextChanged(CharSequence s, int start, int before, int count) &#123;</div><div class="line">				if(count != 0)&#123;</div><div class="line">					txt_content = count + txt_content;</div><div class="line">				&#125;</div><div class="line">				if(before != 0)&#123;</div><div class="line">					txt_content = txt_content - before;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			@Override</div><div class="line">			public void afterTextChanged(Editable s) &#123;</div><div class="line">				txt_input_number.setText(input_length+&quot;/140&quot;);</div><div class="line">			&#125;</div><div class="line">		&#125;);</div></pre></td></tr></table></figure></p>
 <p>最后你还需要在EdiTText的xml属性中添加<strong>android:maxLength=”MAX_Input”</strong>,这样就大功告成了。</p>
-<h2 id="效果图："><a href="#效果图：" class="headerlink" title="效果图："></a>效果图：</h2><ol>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><ol>
 <li><p>没有输入任何内容之前：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_one.png" alt="edit_one"></p>
 </li>
 <li><p>输入内容以后：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_two.png" alt="edit_two"></p>
@@ -218,7 +218,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初步了解EdiTText的方法addTextChangedListener"><span class="toc-text">初步了解EdiTText的方法addTextChangedListener</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深入了解addTextChangedListener里面的属性"><span class="toc-text">深入了解addTextChangedListener里面的属性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图："><span class="toc-text">效果图：</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初步了解addTextChangedListener方法"><span class="toc-text">初步了解addTextChangedListener方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深入了解addTextChangedListener里面的属性"><span class="toc-text">深入了解addTextChangedListener里面的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#深入了解beforeTextChanged方法参数"><span class="toc-text">深入了解beforeTextChanged方法参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深入了解onTextChanged方法参数"><span class="toc-text">深入了解onTextChanged方法参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图</span></a></li></ol>
                 </div>
             </div>
         </div>
