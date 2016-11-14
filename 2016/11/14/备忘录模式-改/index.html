@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="林嘘嘘的博客">
+    <meta name="keyword" content="null">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="I Love You" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        备忘录模式(改)｜Lin&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://linsixu.github.io/2016/11/14/备忘录模式-改/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/321.JPG')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    I Love You
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://of90sai8w.bkt.clouddn.com/hello2.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/hello2.png')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>备忘录模式(改)</h1>
+                    
+                    <span class="meta">
+                         作者 Lin Wait For Li
+                        <span>
+                          日期 2016-11-14
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            备忘录模式(改)
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>今天看了备忘录模式，顺便按着书上的案例敲了一篇，书本上有个地方需要改良的就是每次它只会remove(0)，并没有实现动态删除，下面附上整个小demo的全部代码，实现一个简单的备忘录：</p>
+<h2 id="创建存储类Bean类"><a href="#创建存储类Bean类" class="headerlink" title="创建存储类Bean类"></a>创建存储类Bean类</h2><ol>
+<li>该类作用是存在保存的内容和光标所在位置<br>代码如下：<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class Memoto &#123;</div><div class="line">    public String text;</div><div class="line">    public int cursor;//光标所在位置</div><div class="line"></div><div class="line">    public String getText() &#123;</div><div class="line">        return text;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setText(String text) &#123;</div><div class="line">        this.text = text;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public int getCursor() &#123;</div><div class="line">        return cursor;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setCursor(int cursor) &#123;</div><div class="line">        this.cursor = cursor;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="创建管理备忘录的类"><a href="#创建管理备忘录的类" class="headerlink" title="创建管理备忘录的类"></a>创建管理备忘录的类</h2><ol>
+<li>该类负责存储Memoto数据，防止外部直接访问Memoto<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class NoteCaretaker &#123;</div><div class="line">    private static final int MAX = 30;</div><div class="line">    private List&lt;Memoto&gt; mMemotos = new ArrayList&lt;Memoto&gt;(MAX);</div><div class="line">    private int index = 0;</div><div class="line"></div><div class="line">    public void saveMemoto(Memoto memoto)&#123;</div><div class="line">        index = mMemotos.size() - 1;</div><div class="line">        if(mMemotos.size() &gt; MAX)&#123;</div><div class="line">//            mMemotos.remove(0);(作者的源码)</div><div class="line">            mMemotos.remove(index - MAX);//改良(有序删除，假如31进来就删除0,32进来就删除1)</div><div class="line">        &#125;</div><div class="line">        mMemotos.add(memoto);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public Memoto getPrevMemeto()&#123;</div><div class="line">        index = index &gt; 0? --index:index;</div><div class="line">        return mMemotos.get(index);</div><div class="line">    &#125;</div><div class="line">    public Memoto getNextMemeto()&#123;</div><div class="line">        index = index &lt; mMemotos.size() - 1?++index:index;</div><div class="line">        return mMemotos.get(index);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="替作者改良位置"><a href="#替作者改良位置" class="headerlink" title="替作者改良位置:"></a>替作者改良位置:</h3><p><strong>mMemotos.remove(index - MAX);</strong><br>改良说明:这是进行动态有序删除，假如31进来就删除0,32进来就删除1.这样就不会仅仅局限于30个点，而是动态相连接的30个保存点。</p>
+<h2 id="自定义EditText"><a href="#自定义EditText" class="headerlink" title="自定义EditText"></a>自定义EditText</h2><ol>
+<li>自定义EditText减少Activity中代码重复使用<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class NoteEditText extends EditText &#123;</div><div class="line">    public NoteEditText(Context context) &#123;</div><div class="line">        super(context);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public NoteEditText(Context context, AttributeSet attrs) &#123;</div><div class="line">        super(context, attrs);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public NoteEditText(Context context, AttributeSet attrs, int defStyleAttr) &#123;</div><div class="line">        super(context, attrs, defStyleAttr);</div><div class="line">    &#125;</div><div class="line">    //创建备忘录对象，即存储编辑器的指定数据</div><div class="line">    public Memoto createMemoto()&#123;</div><div class="line">        Memoto noteMemoto = new Memoto();</div><div class="line">        noteMemoto.setText(getText().toString());</div><div class="line">        noteMemoto.setCursor(getSelectionStart());</div><div class="line">        return noteMemoto;</div><div class="line">    &#125;</div><div class="line">    //从备忘录中恢复数据</div><div class="line">    public void restore(Memoto memoto)&#123;</div><div class="line">        setText(memoto.getText());</div><div class="line">        setSelection(memoto.getCursor());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="测试功能代码"><a href="#测试功能代码" class="headerlink" title="测试功能代码"></a>测试功能代码</h2><p>代码如下：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class MemoActivity extends Activity &#123;</div><div class="line">    private NoteEditText mNoteEditText;</div><div class="line">    private TextView mSaveTv;</div><div class="line">    private ImageView mUndoBtn;</div><div class="line">    private ImageView mRedoBtn;</div><div class="line">    NoteCaretaker mCaretaker = new NoteCaretaker();</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_memo);</div><div class="line">        initView();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void initView()&#123;</div><div class="line">        mNoteEditText = (NoteEditText)findViewById(R.id.note_editText);</div><div class="line">        mSaveTv = (TextView)findViewById(R.id.txt_save);</div><div class="line">        mUndoBtn = (ImageView)findViewById(R.id.img_undo);</div><div class="line">        mRedoBtn = (ImageView)findViewById(R.id.img_redo);</div><div class="line">        initOnClickListener();</div><div class="line">    &#125;</div><div class="line">    private void initOnClickListener()&#123;</div><div class="line">        mRedoBtn.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onClick(View v) &#123;</div><div class="line">                mNoteEditText.restore(mCaretaker.getNextMemeto());</div><div class="line">                makeToast(&quot;撤销&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        mUndoBtn.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onClick(View v) &#123;</div><div class="line">                mNoteEditText.restore(mCaretaker.getPrevMemeto());</div><div class="line">                makeToast(&quot;重做&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line"></div><div class="line">        mSaveTv.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onClick(View v) &#123;</div><div class="line">                mCaretaker.saveMemoto(mNoteEditText.createMemoto());</div><div class="line">                makeToast(&quot;保存笔记&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void makeToast(String content)&#123;</div><div class="line">        Toast.makeText(MemoActivity.this,content+mNoteEditText.getText()+&quot;.光标所在位置:&quot;+mNoteEditText.getSelectionStart(),Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><h3 id="初始效果图"><a href="#初始效果图" class="headerlink" title="初始效果图"></a>初始效果图</h3><p><img src="http://of90sai8w.bkt.clouddn.com/Note_first.png" alt="Node_first"></p>
+<h3 id="保存效果图"><a href="#保存效果图" class="headerlink" title="保存效果图"></a>保存效果图</h3><p><img src="http://of90sai8w.bkt.clouddn.com/Note_second.png" alt="Node_second"></p>
+<p>为撤销功能做准备保存第二次:<br><img src="http://of90sai8w.bkt.clouddn.com/Note_second_one.png" alt="Node_second_one"></p>
+<h3 id="撤销效果图"><a href="#撤销效果图" class="headerlink" title="撤销效果图"></a>撤销效果图</h3><p><img src="http://of90sai8w.bkt.clouddn.com/Note_cancel.png" alt="Node_cancel"></p>
+<h3 id="取消撤销效果图"><a href="#取消撤销效果图" class="headerlink" title="取消撤销效果图"></a>取消撤销效果图</h3><p><img src="http://of90sai8w.bkt.clouddn.com/Note_next.png" alt="Node_next"></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2016/11/06/EditText动态数字监听/" data-toggle="tooltip" data-placement="top"
+                           title="EditText动态内容监听">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建存储类Bean类"><span class="toc-text">创建存储类Bean类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建管理备忘录的类"><span class="toc-text">创建管理备忘录的类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#替作者改良位置"><span class="toc-text">替作者改良位置:</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#自定义EditText"><span class="toc-text">自定义EditText</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试功能代码"><span class="toc-text">测试功能代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#初始效果图"><span class="toc-text">初始效果图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#保存效果图"><span class="toc-text">保存效果图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#撤销效果图"><span class="toc-text">撤销效果图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#取消撤销效果图"><span class="toc-text">取消撤销效果图</span></a></li></ol></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; I Love You 2016
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://linsixu.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/1234444.PNG">
+</body>
+
+</html>
