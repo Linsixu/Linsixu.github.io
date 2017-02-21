@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        EditText动态内容监听｜Lin&#39;s blog
+        策略模式小例子｜Lin&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="https://linsixu.github.io/2016/11/06/EditText动态数字监听/">
+    <link rel="canonical" href="https://linsixu.github.io/2017/02/21/策略模式小例子/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,12 +137,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>EditText动态内容监听</h1>
+                    <h1>策略模式小例子</h1>
                     
                     <span class="meta">
                          作者 Lin Wait For Li
                         <span>
-                          日期 2016-11-06
+                          日期 2017-02-21
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            EditText动态内容监听
+            策略模式小例子
         </span>
     </div>
 </header>
@@ -165,52 +165,42 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>最近在做一个项目过程中需要一种能提醒用户还能输入多少个字体的EditText，因为在直接用getText().length()时候出现输入一个字体时候还是显示0,所以想把自己实现的功能代码写下来可以以后用上：</p>
-<h2 id="初步了解addTextChangedListener方法"><a href="#初步了解addTextChangedListener方法" class="headerlink" title="初步了解addTextChangedListener方法"></a>初步了解<strong>addTextChangedListener</strong>方法</h2><ol>
-<li><p><strong>public void beforeTextChanged(CharSequence s, int start, int count, int after)</strong> ：<br>这个方法是在EditText内容改变之前调用的方法.</p>
-</li>
-<li><p><strong>public void onTextChanged(CharSequence s, int start, int before, int count)</strong> ：<br>这个方法是在EditText内容改变过程中调用的方法.</p>
-</li>
-<li><p><strong>public void afterTextChanged(Editable s)</strong> :<br>这个方法是在EdiTText内容改变完成后调用的. </p>
+                <p>今天复习了Android源码设计模式的策略模式，突然想自己写个例子加深自己往后的印象，下面的例子我借助复仇者联盟角色里面形象表达策略模式思想，如有错漏请原谅我的疏忽。</p>
+<h2 id="创建共同属性接口（Hero接口）"><a href="#创建共同属性接口（Hero接口）" class="headerlink" title="创建共同属性接口（Hero接口）"></a>创建共同属性接口（Hero接口）</h2><ol>
+<li>创建该接口是因为复仇者联盟里每个英雄虽有不同技能（方法中的具体表达），但是技能归结起来都属于动作（接口的方法），都属于英雄（接口）一类人物<br>代码如下：<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public interface Hero &#123;</div><div class="line">    void action();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="深入了解addTextChangedListener里面的属性"><a href="#深入了解addTextChangedListener里面的属性" class="headerlink" title="深入了解addTextChangedListener里面的属性"></a>深入了解<strong>addTextChangedListener</strong>里面的属性</h2><h3 id="深入了解beforeTextChanged方法参数"><a href="#深入了解beforeTextChanged方法参数" class="headerlink" title="深入了解beforeTextChanged方法参数"></a>深入了解beforeTextChanged方法参数</h3><p><strong>public void beforeTextChanged(CharSequence s, int start, int count, int after)</strong>有start属性、count属性、after属性。</p>
-<ol>
-<li>其中start属性是变化前内容的个数。但是对于你增加一个数字来说start属性代表着没输入新内容的个数；对于减法而言start属性代表着你已经删除字体后内容的个数</li>
-<li>count属性是你按×删除掉内容字体的个数.</li>
-<li>after属性是新增加内容的个体数.</li>
+<h2 id="创建具体的复仇者联盟角色"><a href="#创建具体的复仇者联盟角色" class="headerlink" title="创建具体的复仇者联盟角色"></a>创建具体的复仇者联盟角色</h2><ol>
+<li>为了能将各自角色独立开，每个角色需要分别实现Hero接口（实现独立）</li>
 </ol>
-<h3 id="深入了解onTextChanged方法参数"><a href="#深入了解onTextChanged方法参数" class="headerlink" title="深入了解onTextChanged方法参数"></a>深入了解onTextChanged方法参数</h3><p><strong>public void onTextChanged(CharSequence s, int start, int before, int count)</strong>中有start属性、before属性、count属性。</p>
-<ol>
-<li>其中start属性是变化前内容的个数。但是对于你增加一个数字来说start属性代表着没输入新内容的个数；对于减法而言start属性代表着你已经删除字体后内容的个数</li>
-<li>count属性是是增加内容后的个数与增加内容钱的个数的差值.</li>
-<li>before属性是删除内容前的个数与删除后内容后的个数的差值.</li>
-</ol>
-<p>话不多说，直接上实现功能的代码：<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">private int txt_content = 0;//先声明一个变量记录输入的内容个数</div><div class="line">editText.addTextChangedListener(new TextWatcher() &#123;</div><div class="line">		@Override</div><div class="line">		public void beforeTextChanged(CharSequence s, int start, int count, int after) &#123;</div><div class="line">			txt_content = start + after;//获取内容变化前总体内容个数</div><div class="line">				if(input_length &gt;= 0)&#123;</div><div class="line">					input_length = MAX_INPUT - txt_content;</div><div class="line">				&#125;</div><div class="line">				LogUtils.i(getClass().getName(),&quot;beforeTextChanged=&quot;+start+&quot;,after=&quot;+after+&quot;,count=&quot;+count);</div><div class="line">			&#125;</div><div class="line">			@Override</div><div class="line">			public void onTextChanged(CharSequence s, int start, int before, int count) &#123;</div><div class="line">				if(count != 0)&#123;</div><div class="line">					txt_content = count + txt_content;</div><div class="line">				&#125;</div><div class="line">				if(before != 0)&#123;</div><div class="line">					txt_content = txt_content - before;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			@Override</div><div class="line">			public void afterTextChanged(Editable s) &#123;</div><div class="line">				txt_input_number.setText(input_length+&quot;/140&quot;);</div><div class="line">			&#125;</div><div class="line">		&#125;);</div></pre></td></tr></table></figure></p>
-<p>最后你还需要在EdiTText的xml属性中添加<strong>android:maxLength=”MAX_Input”</strong>,这样就大功告成了。</p>
-<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><ol>
-<li><p>没有输入任何内容之前：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_one.png" alt="edit_one"></p>
-</li>
-<li><p>输入内容以后：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_two.png" alt="edit_two"></p>
-</li>
-<li><p>删除内容后：<br><img src="http://of90sai8w.bkt.clouddn.com/edit_third.png" alt="edit_third"></p>
+<h3 id="创建美国队长"><a href="#创建美国队长" class="headerlink" title="创建美国队长"></a>创建美国队长</h3><p>代码如下:<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class CaptainHero implements Hero&#123;</div><div class="line">    @Override</div><div class="line">    public void action() &#123;</div><div class="line">        //美国队长的具体技能</div><div class="line">        Log.i(TAG,&quot;无敌之盾&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="创建绿巨人"><a href="#创建绿巨人" class="headerlink" title="创建绿巨人"></a>创建绿巨人</h3><p>代码如下:<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class HulkHero implements Hero &#123;</div><div class="line">    @Override</div><div class="line">    public void action() &#123;</div><div class="line">        //绿巨人的具体技能</div><div class="line">        Log.i(TAG,&quot;浩克之力&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="创建雷神"><a href="#创建雷神" class="headerlink" title="创建雷神"></a>创建雷神</h3><p>代码如下:<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class ThorHero implements Hero &#123;</div><div class="line">    @Override</div><div class="line">    public void action() &#123;</div><div class="line">        //雷神的具体技能</div><div class="line">        Log.i(TAG,&quot;雷神之锤&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="创建神盾局"><a href="#创建神盾局" class="headerlink" title="创建神盾局"></a>创建神盾局</h2><ol>
+<li>为了方便英雄管理，英雄们必须聚集在一起。（方便调用）<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class ManagerHero &#123;</div><div class="line">    private Hero myHero;</div><div class="line"></div><div class="line">    public void selectHero(Hero myHero)&#123;</div><div class="line">        this.myHero = myHero;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void actionHero()&#123;</div><div class="line">        myHero.action();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ol>
+<h2 id="呼叫英雄们"><a href="#呼叫英雄们" class="headerlink" title="呼叫英雄们"></a>呼叫英雄们</h2><ol>
+<li>人们遇难时候，只需要给神盾局信息便可以迎来你心目中的英雄了。不需要一个一个英雄去联系。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">ManagerHero myHero = new ManagerHero();</div><div class="line">myHero.selectHero(new CaptainHero());//选择美国队长</div><div class="line">myHero.actionHero();//美国队长去打架</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="策略模式好处"><a href="#策略模式好处" class="headerlink" title="策略模式好处"></a>策略模式好处</h2><ol>
+<li>每当某个英雄的技能发生改变时候，不需要一个一个去修改，只需要修改当对应英雄类的技能（修改类的action方法里面的具体操作）便可以，从而节省时间。</li>
+<li>每个英雄都是通过神盾局产生联系的，他们之间耦合度比较低，所以导致复仇者联盟二中美队退出了神盾局(玩笑话)。主要是解除类与类之间的耦合度。</li>
+<li>透明化。用户不需要知道怎么去寻找英雄，只需要给信息给神盾局，英雄们便会过来拯救世界。</li>
+<li>冗余度低。少了重复的具体技能代码。</li>
+</ol>
+<p>参考文献:Android源码设计模式</p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2016/11/14/备忘录模式-改/" data-toggle="tooltip" data-placement="top"
-                           title="备忘录模式(改)">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2016/10/20/androidstudio升级步骤/" data-toggle="tooltip" data-placement="top"
-                           title="androidstudio升级步骤">Next Post &rarr;</a>
+                        <a href="/2016/11/14/备忘录模式-改/" data-toggle="tooltip" data-placement="top"
+                           title="备忘录模式(改)">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -223,7 +213,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#初步了解addTextChangedListener方法"><span class="toc-text">初步了解addTextChangedListener方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#深入了解addTextChangedListener里面的属性"><span class="toc-text">深入了解addTextChangedListener里面的属性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#深入了解beforeTextChanged方法参数"><span class="toc-text">深入了解beforeTextChanged方法参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#深入了解onTextChanged方法参数"><span class="toc-text">深入了解onTextChanged方法参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#创建共同属性接口（Hero接口）"><span class="toc-text">创建共同属性接口（Hero接口）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建具体的复仇者联盟角色"><span class="toc-text">创建具体的复仇者联盟角色</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建美国队长"><span class="toc-text">创建美国队长</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建绿巨人"><span class="toc-text">创建绿巨人</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建雷神"><span class="toc-text">创建雷神</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建神盾局"><span class="toc-text">创建神盾局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#呼叫英雄们"><span class="toc-text">呼叫英雄们</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#策略模式好处"><span class="toc-text">策略模式好处</span></a></li></ol>
                 </div>
             </div>
         </div>
