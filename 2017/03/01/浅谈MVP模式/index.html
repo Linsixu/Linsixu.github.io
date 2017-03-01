@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="林嘘嘘的博客">
+    <meta name="keyword" content="null">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="I Love You" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        浅谈MVP模式｜Lin&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://linsixu.github.io/2017/03/01/浅谈MVP模式/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/321.JPG')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    I Love You
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://of90sai8w.bkt.clouddn.com/hello2.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/hello2.png')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>浅谈MVP模式</h1>
+                    
+                    <span class="meta">
+                         作者 Lin Wait For Li
+                        <span>
+                          日期 2017-03-01
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            浅谈MVP模式
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <h2 id="MVP模式三部分"><a href="#MVP模式三部分" class="headerlink" title="MVP模式三部分"></a>MVP模式三部分</h2><ol>
+<li>model（处理业务逻辑）</li>
+<li>view（更新UI界面）</li>
+<li>presenter(连接view与model之间的角色)<br>其中三者关系如下图所示:<br><img src="http://of90sai8w.bkt.clouddn.com/mvp_first.png" alt="mvp_first"><br>用户仅仅接触到的只是View，而不再是Controller模块。这样当逻辑处理业务过多的时候就不会增加界面类的代码，UI仅仅只做UI更新操作，大家各司其职。</li>
+</ol>
+<h2 id="MVP模式实例代码"><a href="#MVP模式实例代码" class="headerlink" title="MVP模式实例代码"></a>MVP模式实例代码</h2><h3 id="model类"><a href="#model类" class="headerlink" title="model类"></a>model类</h3><ol>
+<li><p>首先创建一个model的接口，此接口是为了让不同的model去实现这个接口，能储存不同类型的数据，使得成为数据的出入口。<br>代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public interface MessageModel &#123;</div><div class="line">    void setNumber(Object object);</div><div class="line">    Number getNumber();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>实现上述model接口，让具体的model能储存需要用到的数据。<br>代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class MyMedol implements MessageModel &#123;</div><div class="line">    private Number number;</div><div class="line">    @Override</div><div class="line">    public void setNumber(Object object) &#123;</div><div class="line">        number = (Number)object;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public Number getNumber() &#123;</div><div class="line">        return number;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="view类"><a href="#view类" class="headerlink" title="view类"></a>view类</h3><ol>
+<li>创建一个view的接口，该接口是监听presenter与view之间活动通信，并且触发presenter对UI更新操作。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public interface CommonView &#123;</div><div class="line">    void setNewMessage(int id,Object obejct);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="presenter类"><a href="#presenter类" class="headerlink" title="presenter类"></a>presenter类</h3><ol>
+<li>创建一个presenter类，成为model类与view类之间的通信桥梁。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class MyPresenter &#123;</div><div class="line">    private CommonView commonView;</div><div class="line">    private MyMedol mMedol;</div><div class="line">    private HashMap&lt;String,Integer&gt; map;</div><div class="line">    private Number numberAdd;</div><div class="line">    public MyPresenter(CommonView commonView) &#123;</div><div class="line">        this.commonView = commonView;</div><div class="line">        mMedol = new MyMedol();</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public void saveNumber(Number number)&#123;</div><div class="line">        mMedol.setNumber(number);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 具体逻辑业务处理</div><div class="line">     */</div><div class="line">    public void updateUI()&#123;</div><div class="line">        numberAdd = mMedol.getNumber();</div><div class="line">        int first = Integer.parseInt(numberAdd.getFirstNumber());</div><div class="line">        int second = Integer.parseInt(numberAdd.getSecondNumber());</div><div class="line">        //加法</div><div class="line">        numberAdd.setResult(first + second);</div><div class="line">        commonView.setNewMessage(map.get(&quot;add&quot;),numberAdd);</div><div class="line">        //乘法</div><div class="line">        Number numberMul = new Number();</div><div class="line">        numberMul.setResult(first * second);</div><div class="line">        commonView.setNewMessage(map.get(&quot;mul&quot;),numberMul);</div><div class="line">        //相减</div><div class="line">        Number numberSub = new Number();</div><div class="line">        numberSub.setResult(first - second);</div><div class="line">        commonView.setNewMessage(map.get(&quot;sub&quot;),numberSub);</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 假如有很多控件需要更新ID，可以通过设置UI需要更新的ID，再判断具体 * 的id去更新数据</div><div class="line">     * @param map</div><div class="line">     */</div><div class="line">    public void setUIofId(HashMap&lt;String,Integer&gt; map)&#123;</div><div class="line">        this.map = map;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="测试开始"><a href="#测试开始" class="headerlink" title="测试开始"></a>测试开始</h2><ol>
+<li>首先需要实现CommonView的接口，让当前View与Presenter建立连接。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class MvpActivity extends Activity implements CommonView&#123;</div><div class="line">    private TextView txt_mul,txt_add,txt_sub;</div><div class="line">    private EditText edit_first,edit_second;</div><div class="line">    private Button mButton;</div><div class="line">    private MyPresenter myPresenter;</div><div class="line">    private Number number = new Number();</div><div class="line">    private HashMap&lt;String,Integer&gt; idMap = new HashMap&lt;String,Integer&gt;();</div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_mvp);</div><div class="line">        txt_mul = (TextView)findViewById(R.id.txt_mul);</div><div class="line">        txt_add = (TextView)findViewById(R.id.txt_add);</div><div class="line">        txt_sub = (TextView)findViewById(R.id.txt_sub);</div><div class="line">        edit_first = (EditText)findViewById(R.id.edit_firstNumber);</div><div class="line">        edit_second = (EditText)findViewById(R.id.edit_secondNumber);</div><div class="line">        mButton = (Button)findViewById(R.id.btn_start);</div><div class="line">        //将具体的presenter与当前CommonView绑定，让其相互关联</div><div class="line">        myPresenter = new MyPresenter(this);</div><div class="line">        //储存需要显示的UI</div><div class="line">        idMap.put(&quot;mul&quot;,R.id.txt_mul);</div><div class="line">        idMap.put(&quot;add&quot;,R.id.txt_add);</div><div class="line">        idMap.put(&quot;sub&quot;,R.id.txt_sub);</div><div class="line">        myPresenter.setUIofId(idMap);//设置需要UI更新控件的id</div><div class="line">        mButton.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onClick(View v) &#123;</div><div class="line">                number.setFirstNumber(edit_first.getText().toString());</div><div class="line">                number.setSecondNumber(edit_second.getText().toString());</div><div class="line">                myPresenter.saveNumber(number);</div><div class="line">                myPresenter.updateUI();//点击开始之后就更新UI</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void setNewMessage(int id, Object obejct) &#123;</div><div class="line">        Number number = (Number) obejct;</div><div class="line">        Log.i(&quot;MvpActivity&quot;,&quot;id=&quot;+R.id.txt_add);</div><div class="line">        switch (id)&#123;</div><div class="line">            case R.id.txt_mul:</div><div class="line">                txt_mul.setText(number.getResult()+&quot;&quot;);</div><div class="line">                break;</div><div class="line">            case R.id.txt_add:</div><div class="line">                txt_add.setText(number.getResult()+&quot;&quot;);</div><div class="line">                break;</div><div class="line">            case R.id.txt_sub:</div><div class="line">                txt_sub.setText(number.getResult()+&quot;&quot;);</div><div class="line">                break;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="详谈运行过程"><a href="#详谈运行过程" class="headerlink" title="详谈运行过程"></a>详谈运行过程</h2><ol>
+<li>首先创建的MyPresenter类中就实例化时候就会伴随着生产一个CommonView实例化接口，用于与UI做关系连接</li>
+<li>MyPresenter类中有实例化后的MyMedol对象，再为储存数据创建一个类中的方法，使其在调用方法（saveNumber方法）时候完成数据的储存。</li>
+<li>在UI中实现CommonView的接口，然后通过<strong>myPresenter = new MyPresenter(this)</strong>就可以让presenter能与UI沟通并且执行UI更新。</li>
+<li>假如你UI中涉及需要更新的UI控件很多，你可以像我这样，在presenter中创建一个（setUIofId方法），将所有需要更新的UI控件的id从UI传递到presenter中。再绑定数据与对应控件的id一并返回给UI，在UI（setNewMessage方法）中进行识别。</li>
+<li>具体调用图解<br><img src="http://of90sai8w.bkt.clouddn.com/mvp_true.png" alt="mvp_true"></li>
+</ol>
+<h2 id="mvp模式优缺点"><a href="#mvp模式优缺点" class="headerlink" title="mvp模式优缺点"></a>mvp模式优缺点</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ol>
+<li>UI(activity)无需进行数据业务处理逻辑，代码之间耦合度降低。</li>
+<li>代码扩展方便，只需要在对应的presenter中添加新逻辑处理功能即可。</li>
+<li>减少UI的代码行数，修改UI控件方便。</li>
+</ol>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ol>
+<li>类文件过多，因为每一个UI就要对应一个Presenter，一个Presenter又至少需要对应一个model，导致类膨胀。</li>
+</ol>
+<h2 id="测试代码运行截图"><a href="#测试代码运行截图" class="headerlink" title="测试代码运行截图"></a>测试代码运行截图</h2><p>首先添加第一个数字，再填入第二个数字，然后在MyPresenter进行加、减、乘法的逻辑运算，最后显示出来结果。<br><img src="http://of90sai8w.bkt.clouddn.com/mvp.png" alt="mvp"></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/02/21/策略模式小例子/" data-toggle="tooltip" data-placement="top"
+                           title="策略模式小例子">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP模式三部分"><span class="toc-text">MVP模式三部分</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MVP模式实例代码"><span class="toc-text">MVP模式实例代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#model类"><span class="toc-text">model类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#view类"><span class="toc-text">view类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#presenter类"><span class="toc-text">presenter类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试开始"><span class="toc-text">测试开始</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#详谈运行过程"><span class="toc-text">详谈运行过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mvp模式优缺点"><span class="toc-text">mvp模式优缺点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#优点"><span class="toc-text">优点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#缺点"><span class="toc-text">缺点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试代码运行截图"><span class="toc-text">测试代码运行截图</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; I Love You 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://linsixu.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/1234444.PNG">
+</body>
+
+</html>
