@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="林嘘嘘的博客">
+    <meta name="keyword" content="null">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="I Love You" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        状态模式之微波炉｜Lin&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://linsixu.github.io/2017/03/15/状态模式之微波炉/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/321.JPG')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    I Love You
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://of90sai8w.bkt.clouddn.com/hello2.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/hello2.png')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>状态模式之微波炉</h1>
+                    
+                    <span class="meta">
+                         作者 Lin Wait For Li
+                        <span>
+                          日期 2017-03-15
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            状态模式之微波炉
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>今天因为工作室组长去面试了CVTE，然后被问了设计微波炉功能。现在想向大家展示自己的思路。</p>
+<h2 id="题目要求"><a href="#题目要求" class="headerlink" title="题目要求"></a>题目要求</h2><p>设计微波炉功能，带皮不能加热，加热时不能打开，要求可扩展性。</p>
+<h3 id="分析问题"><a href="#分析问题" class="headerlink" title="分析问题"></a>分析问题</h3><p>寻找具有状态的本身实体对象，这里就有两种:1、微波炉。2、食物。所以就将微波炉和食物设计成一个接口，里面的方法都是该对象所具备的状态。</p>
+<h4 id="寻找状态"><a href="#寻找状态" class="headerlink" title="寻找状态"></a>寻找状态</h4><p>微波炉有打开、加热、加热是否打开、关闭4中状态。而问题主要针对是是否在加热状态。所以应该实现这两种具体类。而食物只有带皮、不带皮两种状态。问题针对也是是否有果皮。</p>
+<h5 id="寻找决定性因素"><a href="#寻找决定性因素" class="headerlink" title="寻找决定性因素"></a>寻找决定性因素</h5><p>在微波炉和食物之中，哪个决定哪个的使用。问题假设:假如你没有食物，你还需要用到微波炉吗？假如你没有微波炉，你的食物能吃吗？从假设之中我们可以看出来，决定性因素是食物，所以在控制微波炉功能块（<strong>MicrowaveController</strong>）应该实现决定性因素(<strong>FoodState</strong>)的状态接口。</p>
+<h2 id="有关微波炉的代码"><a href="#有关微波炉的代码" class="headerlink" title="有关微波炉的代码"></a>有关微波炉的代码</h2><h3 id="创建微波炉接口实现4种状态"><a href="#创建微波炉接口实现4种状态" class="headerlink" title="创建微波炉接口实现4种状态"></a>创建微波炉接口实现4种状态</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public interface MicrowaveState &#123;</div><div class="line">    public void caleFaction();//加热功能</div><div class="line">    public void openmicrowaveState();//打开</div><div class="line">    public void closemicrowaveState();//关闭</div><div class="line">    public void caleFactionIfOpen();//加热过程打开</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="创建属于普通状态下的微波炉"><a href="#创建属于普通状态下的微波炉" class="headerlink" title="创建属于普通状态下的微波炉"></a>创建属于普通状态下的微波炉</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line"> * 微波炉不工作状态</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/3/14</div><div class="line"> */</div><div class="line">public class Openmicrowave implements MicrowaveState &#123;</div><div class="line">    private Context context;</div><div class="line">    public Openmicrowave(Context context) &#123;</div><div class="line">        this.context = context;</div><div class="line">    &#125;</div><div class="line">    @Override</div><div class="line">    public void caleFaction() &#123;</div><div class="line">        Toast.makeText(context,&quot;不能进行加热，请关闭&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void openmicrowaveState() &#123;</div><div class="line">        Toast.makeText(context,&quot;正在打开，请稍等&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void closemicrowaveState() &#123;</div><div class="line">        Toast.makeText(context,&quot;正在关闭，请稍等&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void caleFactionIfOpen() &#123;</div><div class="line">        Toast.makeText(context,&quot;微波炉不工作，随便打开&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="创建属于加热状态下的微波炉"><a href="#创建属于加热状态下的微波炉" class="headerlink" title="创建属于加热状态下的微波炉"></a>创建属于加热状态下的微波炉</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line"> * 微波炉具体的加热状态</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/3/14</div><div class="line"> */</div><div class="line">public class Heatmicrowave implements MicrowaveState &#123;</div><div class="line">    private Context context;</div><div class="line">    public Heatmicrowave(Context context) &#123;</div><div class="line">        this.context = context;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void caleFaction() &#123;</div><div class="line">        Toast.makeText(context,&quot;加热中，请稍等&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void openmicrowaveState() &#123;</div><div class="line">        Toast.makeText(context,&quot;打开微波炉,准备加热&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void closemicrowaveState() &#123;</div><div class="line">        Toast.makeText(context,&quot;正在关闭，请稍等&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public void caleFactionIfOpen() &#123;</div><div class="line">        Toast.makeText(context,&quot;正在加热，不能打开&quot;,Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="有关食物的代码"><a href="#有关食物的代码" class="headerlink" title="有关食物的代码"></a>有关食物的代码</h2><h3 id="食物状态接口"><a href="#食物状态接口" class="headerlink" title="食物状态接口"></a>食物状态接口</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public interface FoodState &#123;</div><div class="line">    public void exitFur();//食物带皮</div><div class="line">    public void NotExitFur();//食物不带皮</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="操控微波炉的说明书"><a href="#操控微波炉的说明书" class="headerlink" title="操控微波炉的说明书"></a>操控微波炉的说明书</h2><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/3/14</div><div class="line"> */</div><div class="line"></div><div class="line">public class MicrowaveController implements FoodState&#123;</div><div class="line">    private MicrowaveState microwaveState;</div><div class="line">    private Context context;</div><div class="line">    public MicrowaveController(Context context) &#123;</div><div class="line">        this.context = context;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void setMyController(MicrowaveState microwaveState)&#123;</div><div class="line">        this.microwaveState = microwaveState;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 带皮食物可以打开微波炉，但是不能加热</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void exitFur() &#123;</div><div class="line">        setMyController(new Openmicrowave(context));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 不带皮食物可以打开微波炉、可以加热、可以关闭</div><div class="line">     */</div><div class="line">    @Override</div><div class="line">    public void NotExitFur() &#123;</div><div class="line">        setMyController(new Heatmicrowave(context));</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 打开微波炉,封装好方法，透明化调用</div><div class="line">     */</div><div class="line">    public void openMicrowave()&#123;</div><div class="line">        microwaveState.openmicrowaveState();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 加热</div><div class="line">     */</div><div class="line">    public void HeatMicrowave()&#123;</div><div class="line">        microwaveState.caleFaction();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 加热过程不能打开</div><div class="line">     */</div><div class="line">    public void openCaleFaction()&#123;</div><div class="line">        microwaveState.caleFactionIfOpen();</div><div class="line">    &#125;</div><div class="line">    /**</div><div class="line">     * 关闭微波炉</div><div class="line">     */</div><div class="line">    public void closeMicrowave()&#123;</div><div class="line">        microwaveState.closemicrowaveState();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实现了食物状态接口(FoodState),可以解决问题中带皮问题。然后再通过实例化两个不同的状态(<strong>Openmicrowave类</strong>和<strong>Heatmicrowave类</strong>)下的微波炉，在对应接口方法中填入对应状态的功能，解决了加热不能打开的问题。<strong>setMyController</strong>就是用来识别食物状态对应的状态的微波炉。很好的利用接口的特性把具体对象封装起来。然后用户只需要通过<strong>MicrowaveController</strong>这个工具类对食物进行操作就可以了，完全不用知道不同状态下微波炉会具体做些什么事情。从而达到对用户的透明性。</p>
+<h2 id="可扩展性"><a href="#可扩展性" class="headerlink" title="可扩展性"></a>可扩展性</h2><p>具体状态的微波炉(<strong>Openmicrowave类</strong>和<strong>Heatmicrowave类</strong>)中具体方法可以实现各种不同的操作，通过接口解耦从而使扩展性高。</p>
+<h2 id="调用代码"><a href="#调用代码" class="headerlink" title="调用代码:"></a>调用代码:</h2><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public class StateActivity extends Activity &#123;</div><div class="line">    private MicrowaveController microwaveController;</div><div class="line">    private Button btn_fur,btn_NotFur;</div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_state);</div><div class="line">        microwaveController = new MicrowaveController(this);</div><div class="line">        btn_fur = (Button)findViewById(R.id.btn_furHeat);</div><div class="line">        btn_NotFur = (Button)findViewById(R.id.btn_NotfurHeat);</div><div class="line"></div><div class="line">        //有果皮加热</div><div class="line">        btn_fur.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onClick(View v) &#123;</div><div class="line">                microwaveController.exitFur();//选择水果状态</div><div class="line">                //点击微波炉上打开按钮</div><div class="line">                microwaveController.openMicrowave();</div><div class="line">                //点击微波炉上加热按钮</div><div class="line">                microwaveController.HeatMicrowave();</div><div class="line">                microwaveController.openCaleFaction();//加热时候打开</div><div class="line">                //点击微波炉上关闭按钮</div><div class="line">                microwaveController.closeMicrowave();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        //没有果皮加热</div><div class="line">        btn_NotFur.setOnClickListener(new View.OnClickListener() &#123;</div><div class="line">            @Override</div><div class="line">            public void onClick(View v) &#123;</div><div class="line">                microwaveController.NotExitFur();//选择水果状态</div><div class="line">                microwaveController.openMicrowave();</div><div class="line">                microwaveController.HeatMicrowave();</div><div class="line">                microwaveController.openCaleFaction();//加热时候打开</div><div class="line">                microwaveController.closeMicrowave();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><ol>
+<li><p>带皮食物加热效果图<br><img src="http://of90sai8w.bkt.clouddn.com/fur_exit.gif" alt="fur_exit"></p>
+</li>
+<li><p>不带皮食物加热效果图<br><img src="http://of90sai8w.bkt.clouddn.com/fur_noExit_one.gif" alt="fur_noExit_one"></p>
+</li>
+</ol>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/03/01/浅谈MVP模式/" data-toggle="tooltip" data-placement="top"
+                           title="浅谈MVP模式">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#题目要求"><span class="toc-text">题目要求</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#分析问题"><span class="toc-text">分析问题</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#寻找状态"><span class="toc-text">寻找状态</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#寻找决定性因素"><span class="toc-text">寻找决定性因素</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有关微波炉的代码"><span class="toc-text">有关微波炉的代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建微波炉接口实现4种状态"><span class="toc-text">创建微波炉接口实现4种状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建属于普通状态下的微波炉"><span class="toc-text">创建属于普通状态下的微波炉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建属于加热状态下的微波炉"><span class="toc-text">创建属于加热状态下的微波炉</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#有关食物的代码"><span class="toc-text">有关食物的代码</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#食物状态接口"><span class="toc-text">食物状态接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#操控微波炉的说明书"><span class="toc-text">操控微波炉的说明书</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#可扩展性"><span class="toc-text">可扩展性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#调用代码"><span class="toc-text">调用代码:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; I Love You 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://linsixu.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/1234444.PNG">
+</body>
+
+</html>
