@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="林嘘嘘的博客">
+    <meta name="keyword" content="null">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="I Love You" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        SparseArray源码解析｜Lin&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://linsixu.github.io/2017/04/25/SparseArray源码解析/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/321.JPG')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    I Love You
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://of90sai8w.bkt.clouddn.com/hello2.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/hello2.png')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>SparseArray源码解析</h1>
+                    
+                    <span class="meta">
+                         作者 Lin Wait For Li
+                        <span>
+                          日期 2017-04-25
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            SparseArray源码解析
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>最近笔试WPS的时候遇到SparseArray，需要手写Put和Get的方法，那时候并没有看过它的源代码，之前在看《Android源码设计模式》中也看到SparseArray的介绍，说如果Key的值是整形，用SparseArray比HashMap要高效很多，竟然吃亏过了就不能再吃亏了，今天自己手撸了SparseArray的代码，为大家介绍下SparseArray源码。</p>
+<h2 id="ContainerHelpers类"><a href="#ContainerHelpers类" class="headerlink" title="ContainerHelpers类"></a>ContainerHelpers类</h2><ol>
+<li>ContainerHelpers类是一个工具类，其中里面的binSearch方法是二分查找(折半查找),通过Key值查询对应的位置。这个工具类就是SparseArray的效率比HashMap高的原因。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/4/25</div><div class="line"> */</div><div class="line"></div><div class="line">public class ContainerHelpers &#123;</div><div class="line">    final static int[] EMPTY_INTS = new int[0];</div><div class="line">    final static Object[] EMPTY_OBJECTS = new Object[0];</div><div class="line">    //二分查找</div><div class="line">    static int binSearch(int a[],int size,int key)&#123;</div><div class="line">        int low = 0;</div><div class="line">        int high = size -1;</div><div class="line">        while(low &lt; high)&#123;</div><div class="line">            int middle = low + ((high - low)&gt;&gt;1);</div><div class="line">            if(a[middle] &gt; key)&#123;</div><div class="line">                high = middle - 1;</div><div class="line">            &#125;else if(a[middle] &lt; key)&#123;</div><div class="line">                low = middle + 1;</div><div class="line">            &#125;else if(a[middle] == key)&#123;</div><div class="line">                return middle;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return ~low;//在已有数据中找不到Key值，用low的取反值代替</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="SparseArray类"><a href="#SparseArray类" class="headerlink" title="SparseArray类"></a>SparseArray类</h2><h3 id="SparseArray类的构造函数"><a href="#SparseArray类的构造函数" class="headerlink" title="SparseArray类的构造函数"></a>SparseArray类的构造函数</h3><ol>
+<li>SparseArray中有两种构造方法：其中一种是默认无参数的构造方法，另外一种是用户传递参数的构造方法。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">//无参数的构造方法</div><div class="line">public SparseArray() &#123;</div><div class="line">    this(10);//将默认容量值10传递给有参数的构造方法当中</div><div class="line">&#125;</div><div class="line"></div><div class="line">public SparseArray(int capacity) &#123;</div><div class="line">    if(capacity == 0)&#123;</div><div class="line">        mKeys = ContainerHelpers.EMPTY_INTS;</div><div class="line">        mValues = ContainerHelpers.EMPTY_OBJECTS;</div><div class="line">    &#125;else &#123;</div><div class="line">        mKeys = new int[capacity];</div><div class="line">        mValues = new Object[capacity];</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    mSize = 0;//已经储存的&lt;key,value&gt;的键值个数</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="SparseArray类的Put方法"><a href="#SparseArray类的Put方法" class="headerlink" title="SparseArray类的Put方法"></a>SparseArray类的Put方法</h3><ol>
+<li>Put方法也是先进行判断原来的数组中是否已经存在Key值，如果存在的话直接替换掉对应Key值下的Value;如果不存在就进行容量的判断和位置的插入。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line">    *</div><div class="line">    * @param key 键值</div><div class="line">    * @param value  内容</div><div class="line">    */</div><div class="line">   public void put(int key,Object value)&#123;</div><div class="line">       int i = ContainerHelpers.binSearch(mKeys,mSize,key);//</div><div class="line"></div><div class="line">       if(i &gt; 0)&#123;</div><div class="line">           mValues[i] = value;//储存对应的Key，覆盖对应的Value</div><div class="line">       &#125;else&#123;</div><div class="line">           i = ~i;//再取一次反变成正值</div><div class="line">           if(i &lt; mSize &amp;&amp; mValues[i] == DELETED)&#123;</div><div class="line">               mKeys[i] = key;</div><div class="line">               mValues[i] = value;</div><div class="line">               return;</div><div class="line">           &#125;</div><div class="line">           if(i &lt; mSize &amp;&amp; mSize &gt;= mKeys.length)&#123;</div><div class="line">               //如果有元素被删除了，并且目前容量不足，进行一次GC整理删除操作</div><div class="line">               gc();</div><div class="line">               //再次查找Key位置所在，因为GC之后位置可能发生变化</div><div class="line">               i = ~ContainerHelpers.binSearch(mKeys,mSize,key);</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           if(mSize &gt;= mKeys.length)&#123;</div><div class="line">               int n = mSize + 1;</div><div class="line"></div><div class="line">               int nKeys[] = new int[n];</div><div class="line">               Object nValues[] = new Object[n];</div><div class="line"></div><div class="line"></div><div class="line">               //进行数组数据拷贝备份</div><div class="line">               System.arraycopy(mKeys,0,nKeys,0,mKeys.length);</div><div class="line">               System.arraycopy(mValues,0,nValues,0,mValues.length);</div><div class="line"></div><div class="line">               //扩展之后的数组将引用重新给回之前的数组</div><div class="line">               mKeys = nKeys;</div><div class="line">               mValues = nValues;</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           //i为插入位置,如果i&lt;mSize,则i之后的元素需要依次向后移动一位.</div><div class="line">           if(mSize - i != 0)&#123;</div><div class="line">               System.arraycopy(mKeys,i,mKeys,i + 1,mSize - i);</div><div class="line">               System.arraycopy(mValues,i,mValues,i + 1,mSize - i);</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           mKeys[i] = key;</div><div class="line">           mValues[i] = value;</div><div class="line">           mSize++;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>其中System.arraycopy(A,B,C,D,E)里面的参数的意思如下解释:<br>A: 要复制的数组A(源数组)<br>B: 数组A从B位置开始进行复制<br>C: 复制到数组C中(目的数组)<br>D: 数组C从D位置开始赋值(int C[D] = int A[B])<br>E: 复制的长度</p>
+<h3 id="SparseArray类的Get方法"><a href="#SparseArray类的Get方法" class="headerlink" title="SparseArray类的Get方法"></a>SparseArray类的Get方法</h3><ol>
+<li>Get方法中用了重载机制，在get(int key)方法里面再调用get(key,null),这里的null是当获取不存在的<key,value>时候的返回值。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line">     *</div><div class="line">     * @param key 键值</div><div class="line">     * @return 根据键值寻找Value值</div><div class="line">     */</div><div class="line">    public T get(int key)&#123;</div><div class="line">        return get(key,null);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public T get(int key,T valueIfKeyNotFound)&#123;</div><div class="line">        int i = ContainerHelpers.binSearch(mKeys,mSize,key);</div><div class="line"></div><div class="line">        if( i &lt; 0 || mValues[i] == DELETED)&#123; //如果不存在这个数，或者已经被删除了</div><div class="line">            return valueIfKeyNotFound;</div><div class="line">        &#125;else&#123;</div><div class="line">            return (T)mValues[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</key,value></li>
+</ol>
+<h3 id="SparseArray类的Remove方法"><a href="#SparseArray类的Remove方法" class="headerlink" title="SparseArray类的Remove方法"></a>SparseArray类的Remove方法</h3><ol>
+<li>Remove方法里面调用的是delete方法,其中delete方法是通过折半查找,找到对应的index下标后,判断下标是否存在,如存在就将value设置成DELETED参数,再设置mGarbage为true,可以当容量不足时候进行gc()操作。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">public void delete(int key)&#123;</div><div class="line">        //输入mSize可以控制查找的范围，避免不必要的查找</div><div class="line">        int i = ContainerHelpers.binSearch(mKeys,mSize,key);</div><div class="line"></div><div class="line">        if(i &gt;= 0)&#123;</div><div class="line">            if(mValues[i] != DELETED)&#123;</div><div class="line">                //把被删除位置的Value置为DETELE</div><div class="line">                mValues[i] = DELETED;</div><div class="line"></div><div class="line">                mGarbage = true;//设置gc为true，说明可以进行gc整理工作</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"> /**</div><div class="line">     * 根据键值查找到需要删除的 Value</div><div class="line">     * @param key 键值</div><div class="line">     */</div><div class="line">    public void remove(int key)&#123;</div><div class="line">        delete(key);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="SparseArray类的gc-方法"><a href="#SparseArray类的gc-方法" class="headerlink" title="SparseArray类的gc()方法"></a>SparseArray类的gc()方法</h3><ol>
+<li>这里的gc()方法不是JVM里面那种gc()操作，这里只是自行定义了一个数组移动的操作，将已经删除数据的数组i,将i+1后面的数组往前面移动。<br>代码如下:<figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">private void gc() &#123;</div><div class="line">    int n = mSize;</div><div class="line">    int o = 0;</div><div class="line">    int[] keys = mKeys;</div><div class="line">    Object[] values = mValues;</div><div class="line">      for (int i = 0; i &lt; n; i++) &#123;</div><div class="line">        Object val = values[i];</div><div class="line">			if (val != DELETED) &#123; //如果不是已经删除的数据，统计mSize总数</div><div class="line">              	if (i != o) &#123; //如果不等于证明前面i为有被删除的数据，需要移动数组</div><div class="line">                    keys[o] = keys[i];//将非DELETED资源全部移动到数组前面.</div><div class="line">                    values[o] = val;//将后面数组的value填进已经删除数据的数据的位置</div><div class="line">                    values[i] = null;</div><div class="line">                &#125;</div><div class="line">                o++;</div><div class="line">            &#125;</div><div class="line">    //如果val == DELETED,o没有+1，因为这时候o的位置是已经被删除了数据，所以要把后面的数据往前面移动</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mGarbage = false;//整理完数组后恢复标记值为false</div><div class="line">        mSize = o;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="SparseArray类的全部代码"><a href="#SparseArray类的全部代码" class="headerlink" title="SparseArray类的全部代码"></a>SparseArray类的全部代码</h3><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/4/25</div><div class="line"> */</div><div class="line"></div><div class="line">public class SparseArray&lt;T&gt; implements Cloneable&#123;</div><div class="line"></div><div class="line">    private int mKeys[];//索引数组</div><div class="line"></div><div class="line">    private Object mValues[];//储存对象的数组</div><div class="line"></div><div class="line">    private int mSize;//储存的键值对总数</div><div class="line"></div><div class="line">    private boolean mGarbage = false;</div><div class="line"></div><div class="line">    private static final Object DELETED = new Object(); //自定需要被删除的</div><div class="line"></div><div class="line">    public SparseArray() &#123;</div><div class="line">        this(10);</div><div class="line">    &#125;</div><div class="line">    public SparseArray(int capacity) &#123;</div><div class="line">        if(capacity == 0)&#123;</div><div class="line">            mKeys = ContainerHelpers.EMPTY_INTS;</div><div class="line">            mValues = ContainerHelpers.EMPTY_OBJECTS;</div><div class="line">        &#125;else &#123;</div><div class="line">            mKeys = new int[capacity];</div><div class="line">            mValues = new Object[capacity];</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mSize = 0;//已经储存的&lt;key,value&gt;的键值个数</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     *</div><div class="line">     * @param key 键值</div><div class="line">     * @param value  内容</div><div class="line">     */</div><div class="line">    public void put(int key,Object value)&#123;</div><div class="line">        int i = ContainerHelpers.binSearch(mKeys,mSize,key);//</div><div class="line"></div><div class="line">        if(i &gt; 0)&#123;</div><div class="line">            mValues[i] = value;//储存对应的Key，覆盖对应的Value</div><div class="line">        &#125;else&#123;</div><div class="line">            i = ~i;//再取一次反变成正值</div><div class="line">            if(i &lt; mSize &amp;&amp; mValues[i] == DELETED)&#123;</div><div class="line">                mKeys[i] = key;</div><div class="line">                mValues[i] = value;</div><div class="line">                return;</div><div class="line">            &#125;</div><div class="line">            if(i &lt; mSize &amp;&amp; mSize &gt;= mKeys.length)&#123;</div><div class="line">                //如果有元素被删除了，并且目前容量不足，进行一次GC整理删除操作</div><div class="line">                gc();</div><div class="line">                //再次查找Key位置所在，因为GC之后位置可能发生变化</div><div class="line">                i = ~ContainerHelpers.binSearch(mKeys,mSize,key);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            if(mSize &gt;= mKeys.length)&#123;</div><div class="line">                int n = mSize + 1;</div><div class="line"></div><div class="line">                int nKeys[] = new int[n];</div><div class="line">                Object nValues[] = new Object[n];</div><div class="line"></div><div class="line"></div><div class="line">                //进行数组数据拷贝备份</div><div class="line">                System.arraycopy(mKeys,0,nKeys,0,mKeys.length);</div><div class="line">                System.arraycopy(mValues,0,nValues,0,mValues.length);</div><div class="line"></div><div class="line">                //扩展之后的数组将引用重新给回之前的数组</div><div class="line">                mKeys = nKeys;</div><div class="line">                mValues = nValues;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            //i为插入位置,如果i&lt;mSize,则i之后的元素需要依次向后移动一位.</div><div class="line">            if(mSize - i != 0)&#123;</div><div class="line">                System.arraycopy(mKeys,i,mKeys,i + 1,mSize - i);</div><div class="line">                System.arraycopy(mValues,i,mValues,i + 1,mSize - i);</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            mKeys[i] = key;</div><div class="line">            mValues[i] = value;</div><div class="line">            mSize++;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     *</div><div class="line">     * @param key 键值</div><div class="line">     * @return 根据键值寻找Value值</div><div class="line">     */</div><div class="line">    public T get(int key)&#123;</div><div class="line">        return get(key,null);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public T get(int key,T valueIfKeyNotFound)&#123;</div><div class="line">        int i = ContainerHelpers.binSearch(mKeys,mSize,key);</div><div class="line"></div><div class="line">        if( i &lt; 0 || mValues[i] == DELETED)&#123; //如果不存在这个数，或者已经被删除了</div><div class="line">            return valueIfKeyNotFound;</div><div class="line">        &#125;else&#123;</div><div class="line">            return (T)mValues[i];</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void delete(int key)&#123;</div><div class="line">        //输入mSize可以控制查找的范围，避免不必要的查找</div><div class="line">        int i = ContainerHelpers.binSearch(mKeys,mSize,key);</div><div class="line"></div><div class="line">        if(i &gt;= 0)&#123;</div><div class="line">            if(mValues[i] != DELETED)&#123;</div><div class="line">                //把被删除位置的Value置为DETELE</div><div class="line">                mValues[i] = DELETED;</div><div class="line"></div><div class="line">                mGarbage = true;//设置gc为true，说明可以进行gc整理工作</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    /**</div><div class="line">     * 根据键值查找到需要删除的 Value</div><div class="line">     * @param key 键值</div><div class="line">     */</div><div class="line">    public void remove(int key)&#123;</div><div class="line">        delete(key);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    private void gc() &#123;</div><div class="line">        int n = mSize;</div><div class="line">        int o = 0;</div><div class="line">        int[] keys = mKeys;</div><div class="line">        Object[] values = mValues;</div><div class="line"></div><div class="line">        for (int i = 0; i &lt; n; i++) &#123;</div><div class="line">            Object val = values[i];</div><div class="line"></div><div class="line">            if (val != DELETED) &#123; //如果不是已经删除的数据，统计mSize总数</div><div class="line">                if (i != o) &#123; //如果不等于证明前面i为有被删除的数据，需要移动数组</div><div class="line">                    keys[o] = keys[i];//将非DELETED资源全部移动到数组前面.</div><div class="line">                    values[o] = val;//将后面数组的value填进已经删除数据的数据的位置</div><div class="line">                    values[i] = null;</div><div class="line">                &#125;</div><div class="line">                o++;</div><div class="line">            &#125;</div><div class="line">    //如果val == DELETED,o没有+1，因为这时候o的位置是已经被删除了数据，所以要把后面的数据往前面移动</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        mGarbage = false;</div><div class="line">        mSize = o;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="如果Key是其他类型咋办"><a href="#如果Key是其他类型咋办" class="headerlink" title="如果Key是其他类型咋办"></a>如果Key是其他类型咋办</h2><p>如果key类型为其它的类型，则使用ArrayMap<key,value></key,value></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/03/15/状态模式之微波炉/" data-toggle="tooltip" data-placement="top"
+                           title="状态模式之微波炉">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ContainerHelpers类"><span class="toc-text">ContainerHelpers类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SparseArray类"><span class="toc-text">SparseArray类</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SparseArray类的构造函数"><span class="toc-text">SparseArray类的构造函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SparseArray类的Put方法"><span class="toc-text">SparseArray类的Put方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SparseArray类的Get方法"><span class="toc-text">SparseArray类的Get方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SparseArray类的Remove方法"><span class="toc-text">SparseArray类的Remove方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SparseArray类的gc-方法"><span class="toc-text">SparseArray类的gc()方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SparseArray类的全部代码"><span class="toc-text">SparseArray类的全部代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如果Key是其他类型咋办"><span class="toc-text">如果Key是其他类型咋办</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; I Love You 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://linsixu.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/1234444.PNG">
+</body>
+
+</html>
