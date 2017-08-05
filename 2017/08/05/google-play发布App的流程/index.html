@@ -18,11 +18,11 @@
     <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
     <title>
         
-        Win10系统搭配Android环境常见问题｜Lin&#39;s blog
+        google play发布App的流程｜Lin&#39;s blog
         
     </title>
 
-    <link rel="canonical" href="https://linsixu.github.io/2017/07/09/Win10系统搭配Android环境常见问题/">
+    <link rel="canonical" href="https://linsixu.github.io/2017/08/05/google-play发布App的流程/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -137,12 +137,12 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
                 <div class="post-heading">
-                    <h1>Win10系统搭配Android环境常见问题</h1>
+                    <h1>google play发布App的流程</h1>
                     
                     <span class="meta">
                          作者 Lin Wait For Li
                         <span>
-                          日期 2017-07-09
+                          日期 2017-08-05
                          </span>
                     </span>
                     <div class="tags text-center">
@@ -154,7 +154,7 @@
     </div>
     <div class="post-title-haojen">
         <span>
-            Win10系统搭配Android环境常见问题
+            google play发布App的流程
         </span>
     </div>
 </header>
@@ -165,36 +165,46 @@
         <div class="row">
             <!-- Post Container -->
             <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <p>最近去公司实习，公司配的电脑是Win10的系统，在安装androidstudio上出现百度没办法解决的问题。个人觉得程序员最苦逼最浪费时间的事情之一就是装环境了，这次我把自己经验写下来，希望以后可以用上。这里要提醒一下：Genymotion和VirtualBox有很多版本是冲突不行的，如果你想要用Genymotion的虚拟机，必须从下面的链接去下载进行安装。</p>
-<h2 id="Genymotion下载链接"><a href="#Genymotion下载链接" class="headerlink" title="Genymotion下载链接"></a>Genymotion下载链接</h2><p>下面的链接记住只安装genymotion，弹出VirtualBox安装点击取消<br><a href="http://pan.baidu.com/s/1hsehFKS" target="_blank" rel="external">Genymotion</a></p>
-<h2 id="VirtualBox下载链接"><a href="#VirtualBox下载链接" class="headerlink" title="VirtualBox下载链接"></a>VirtualBox下载链接</h2><p>下面的链接也只是安装VirtualBox，弹出genymotion的安装点击取消：<br><a href="http://pan.baidu.com/s/1nvum3SP" target="_blank" rel="external">VirtualBox</a></p>
-<h2 id="安装Genymotion出现的问题"><a href="#安装Genymotion出现的问题" class="headerlink" title="安装Genymotion出现的问题"></a>安装Genymotion出现的问题</h2><h3 id="问题1-不能启动Genymotion"><a href="#问题1-不能启动Genymotion" class="headerlink" title="问题1-不能启动Genymotion"></a>问题1-不能启动Genymotion</h3><p>问题截图<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-question1.png" alt="win10-genymotion-question1"></p>
-<h4 id="问题1-解决方法"><a href="#问题1-解决方法" class="headerlink" title="问题1-解决方法"></a>问题1-解决方法</h4><p>首先出现这个问题是应该你安装VirtualBox的时候没有设置相关参数，所以接下来要去全局设定。<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-q1-deal1.png" alt="win10-genymotion-q1-deal1"></p>
-<p>其次选择网络，点击Host-Only进行编辑。过程中你有可能看见很多个Adapter，你保留Adapter#2或者Adapter#3进行编辑就可以了。<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-q1-deal2.png" alt="win10-genymotion-q1-deal2"></p>
-<p>然后设置如下图的相关参数。<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-q1-deal3.png" alt="win10-genymotion-q1-deal3"><br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-q1-deal4.png" alt="win10-genymotion-q1-deal4"></p>
-<p>最后这几步设置完成后还是出现错误，请留意问题2。</p>
-<h3 id="问题2-没有开启虚拟化"><a href="#问题2-没有开启虚拟化" class="headerlink" title="问题2-没有开启虚拟化"></a>问题2-没有开启虚拟化</h3><p>问题截图<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-question2.png" alt="win10-genymotion-question2"></p>
-<h4 id="问题2-解决方法"><a href="#问题2-解决方法" class="headerlink" title="问题2-解决方法"></a>问题2-解决方法</h4><p>首先查看是否你的电脑没有打开虚拟化，下面的图片红色框中就很清楚可以看出是否打开虚拟化了。如果你都打开虚拟化还出现问题2的错误，建议自行百度解决了。<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-q2-deal1.png" alt="win10-genymotion-q2-deal1"></p>
-<p>如果红色框起来的是未启用，那么就要去电脑的biso中设置Intel Virtual Technology为enable可以通过任务管理器查看是否有打开虚拟化功能，其中你如果不会怎样去开启，可以参考下面的链接。<br><a href="http://jingyan.baidu.com/article/4b52d702a3e0aafc5d774b7c.html" target="_blank" rel="external">如何打开虚拟化</a></p>
-<p>打开虚拟化之后如果从genymotion中创建android虚拟机还是出现问题2的错误，那么你就要进行下图的操作，直接创建点击确定就可以了，不需要修改任何东西。<br><img src="http://of90sai8w.bkt.clouddn.com/win10-genymotion-q2-deal2.png" alt="win10-genymotion-q2-deal2"></p>
-<p>然后所有问题就可以大功告成了，继续加油吧！程序猿</p>
-<h2 id="安装AndroidStudio出现的问题"><a href="#安装AndroidStudio出现的问题" class="headerlink" title="安装AndroidStudio出现的问题"></a>安装AndroidStudio出现的问题</h2><p>问题截图<br><img src="http://of90sai8w.bkt.clouddn.com/win10-studio-question.png" alt="win10-studio-question"></p>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>你把你的JAVA的JDK 32位卸载了，换上64位的，androidstudio也下载64的，eclipse也下载64的。因为Win10的64位系统可能不是支持32位，反正我全部换成64位问题就解决了，可以尝试下。</p>
+                <p>上周实习公司分配的新任务中有一个关于海外App的开发和发布，个人负责开发的MoneyApp 2.0版本需要在google play上发布，所以顺便做个记录以后方便大家参考使用。</p>
+<h2 id="注册google-play-developer"><a href="#注册google-play-developer" class="headerlink" title="注册google play developer"></a>注册google play developer</h2><p>首先你需要翻墙到注册一个google play developer账号，这里是需要交纳25美金的（终身开发使用），交完定金之后你就可以创建应用了。<br>注册地址如下：<a href="https://play.google.com/apps/publish/?" target="_blank" rel="external">google play for developer</a></p>
+<h2 id="创建应用"><a href="#创建应用" class="headerlink" title="创建应用"></a>创建应用</h2><h3 id="需要提前准备的东西"><a href="#需要提前准备的东西" class="headerlink" title="需要提前准备的东西"></a>需要提前准备的东西</h3><p>你用你的google play开发者账号登陆之后，你就可以创建应用了，不过在这之前创建应用前你需要准备以下材料：</p>
+<ol>
+<li>logo图片</li>
+<li>App的介绍图片(图片格式请查看google play的要求)</li>
+<li>宣传图</li>
+<li>APK文件</li>
+<li>应用描述<br><img src="http://of90sai8w.bkt.clouddn.com/google_developer_first.png" alt="google_developer_first"></li>
+</ol>
+<h3 id="填写信息"><a href="#填写信息" class="headerlink" title="填写信息"></a>填写信息</h3><p>创建应用时候你需要上传logo图片、宣传图、App介绍图片等信息，然后上传你的APK。这里需要注册的是填写的版本号信息要和你用Androidstudio打包时候里面的gradle版本号是对应的。<br><img src="http://of90sai8w.bkt.clouddn.com/google_developer_second.png" alt="google_developer_second"></p>
+<p><img src="http://of90sai8w.bkt.clouddn.com/google_developer_third.png" alt="google_developer_third"><br><strong>注意:</strong> 版本号对应versionCode,版本名称对应versionName(这个可以自己在以后发布新版本覆盖时候随便添加，versionName不重要，只是展示给用户看新版本名字，例如1.1.2或1.0.3都可以，但是versionCode很重要，如果要发布新版本就一定要比之前的versionCode大)。</p>
+<h2 id="发布新版本"><a href="#发布新版本" class="headerlink" title="发布新版本"></a>发布新版本</h2><h3 id="如何操作"><a href="#如何操作" class="headerlink" title="如何操作"></a>如何操作</h3><p>发布新版本首先你要选择你要发布新版本的App，然后点击该App应用。<br><img src="http://of90sai8w.bkt.clouddn.com/google_update_first.png" alt="google_update_first"></p>
+<p>进入以后界面如下，点击版本管理。<br><img src="http://of90sai8w.bkt.clouddn.com/google_update_second.png" alt="google_update_second"></p>
+<p>然后点击应用版本，出现的界面可能有如下两种情况。</p>
+<ol>
+<li><p>点击创建版本<br><img src="http://of90sai8w.bkt.clouddn.com/google_update_third.png" alt="google_update_third"></p>
+</li>
+<li><p>点击修改版本<br><img src="http://of90sai8w.bkt.clouddn.com/google_update_fouth.png" alt="google_update_fouth"></p>
+</li>
+</ol>
+<h3 id="上传APK"><a href="#上传APK" class="headerlink" title="上传APK"></a>上传APK</h3><p>然后点击完创建版本/修改版本后，选择上传你最新的APK包。<br><img src="http://of90sai8w.bkt.clouddn.com/google_update_six.png" alt="google_update_six"></p>
+<p>点击上传以后是如下图。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_one.png" alt="google_submit_one"></p>
+<p>上传成功后会显示APK的详细信息。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_success.png" alt="google_submit_success"></p>
+<h3 id="修改新版本信息。"><a href="#修改新版本信息。" class="headerlink" title="修改新版本信息。"></a>修改新版本信息。</h3><p>修改成你在Androidstudio里gradle版本写的versionName。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_message.png" alt="google_submit_message"></p>
+<p>在新版本的App中添加了什么功能，App是什么用途，要添加说明。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_newmessage.png" alt="google_submit_newmessage"></p>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><p>提交之后它会报错，提示说要移除旧版本的才可以进行新版本发布。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_error.png" alt="google_submit_error"></p>
+<p>所以你需要回到你刚刚上传的那个界面，点击停用旧版本，然后拖下去点击保存，然后查看，就可以进行新版本的发布了。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_alter.png" alt="google_submit_alter"></p>
+<p>点击发布。<br><img src="http://of90sai8w.bkt.clouddn.com/google_submit_finally.png" alt="google_submit_finally"></p>
+<h2 id="修改旧版本的logo等信息"><a href="#修改旧版本的logo等信息" class="headerlink" title="修改旧版本的logo等信息"></a>修改旧版本的logo等信息</h2><p>如果你新的版本需要修改logo、图片详细介绍等信息，可以选择左边的商店发布进行信息的修改，然后拖到最上面提交更新。<br><img src="http://of90sai8w.bkt.clouddn.com/google_alter.png" alt="google_alter"></p>
 
                 <hr>
                 
 
                 <ul class="pager">
                     
-                    <li class="previous">
-                        <a href="/2017/08/05/google-play发布App的流程/" data-toggle="tooltip" data-placement="top"
-                           title="google play发布App的流程">&larr; Previous Post</a>
-                    </li>
-                    
                     
                     <li class="next">
-                        <a href="/2017/04/25/SparseArray源码解析/" data-toggle="tooltip" data-placement="top"
-                           title="SparseArray源码解析">Next Post &rarr;</a>
+                        <a href="/2017/07/09/Win10系统搭配Android环境常见问题/" data-toggle="tooltip" data-placement="top"
+                           title="Win10系统搭配Android环境常见问题">Next Post &rarr;</a>
                     </li>
                     
                 </ul>
@@ -207,7 +217,7 @@
 
             <div class="hidden-xs col-sm-3 toc-col">
                 <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Genymotion下载链接"><span class="toc-text">Genymotion下载链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#VirtualBox下载链接"><span class="toc-text">VirtualBox下载链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装Genymotion出现的问题"><span class="toc-text">安装Genymotion出现的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题1-不能启动Genymotion"><span class="toc-text">问题1-不能启动Genymotion</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题1-解决方法"><span class="toc-text">问题1-解决方法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#问题2-没有开启虚拟化"><span class="toc-text">问题2-没有开启虚拟化</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#问题2-解决方法"><span class="toc-text">问题2-解决方法</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#安装AndroidStudio出现的问题"><span class="toc-text">安装AndroidStudio出现的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-text">解决方法</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#注册google-play-developer"><span class="toc-text">注册google play developer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建应用"><span class="toc-text">创建应用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#需要提前准备的东西"><span class="toc-text">需要提前准备的东西</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#填写信息"><span class="toc-text">填写信息</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#发布新版本"><span class="toc-text">发布新版本</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#如何操作"><span class="toc-text">如何操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#上传APK"><span class="toc-text">上传APK</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#修改新版本信息。"><span class="toc-text">修改新版本信息。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#遇到的问题"><span class="toc-text">遇到的问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改旧版本的logo等信息"><span class="toc-text">修改旧版本的logo等信息</span></a></li></ol>
                 </div>
             </div>
         </div>
