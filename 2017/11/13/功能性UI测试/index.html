@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="林嘘嘘的博客">
+    <meta name="keyword" content="null">
+    <meta name="theme-color" content="#600090">
+    <meta name="msapplication-navbutton-color" content="#600090">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
+    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
+    <link rel="alternate" type="application/atom+xml" title="I Love You" href="/atom.xml">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
+    <title>
+        
+        功能性UI测试｜Lin&#39;s blog
+        
+    </title>
+
+    <link rel="canonical" href="https://linsixu.github.io/2017/11/13/功能性UI测试/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/blog-style.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+</head>
+
+<style>
+
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/321.JPG')
+    }
+</style>
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="" class="animated fadeIn">
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
+" data-ishome = "false" >
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand animated pulse" href="/">
+                <span class="brand-logo">
+                    I Love You
+                </span>
+                's Blog
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <!-- /.navbar-collapse -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+					
+                    
+					
+					
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+//    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+<!-- Main Content -->
+
+<!--only post-->
+
+
+<img class="wechat-title-img"
+     src="http://of90sai8w.bkt.clouddn.com/hello2.png">
+
+
+<style>
+    
+    header.intro-header {
+        background-image: url('http://of90sai8w.bkt.clouddn.com/hello2.png')
+    }
+
+    
+</style>
+
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <div class="post-heading">
+                    <h1>功能性UI测试</h1>
+                    
+                    <span class="meta">
+                         作者 Lin Wait For Li
+                        <span>
+                          日期 2017-11-13
+                         </span>
+                    </span>
+                    <div class="tags text-center">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="post-title-haojen">
+        <span>
+            功能性UI测试
+        </span>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+            <!-- Post Container -->
+            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
+                <p>Android框架内支持运行的Instrumentation测试。测试库中包含Espresso，用于运行功能UI测试的框架。下面通过简单小例子来介绍一下如何全自动测试相关功能UI。</p>
+<h2 id="添加依赖"><a href="#添加依赖" class="headerlink" title="添加依赖"></a>添加依赖</h2><p>首先在build.gradle添加部分代码<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">apply plugin: &apos;com.android.application&apos;</div><div class="line"></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion 25</div><div class="line">    buildToolsVersion &quot;25.0.2&quot;</div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId &quot;com.example.administrator.test&quot;</div><div class="line">        minSdkVersion 14</div><div class="line">        targetSdkVersion 25</div><div class="line">        versionCode 1</div><div class="line">        versionName &quot;1.0&quot;</div><div class="line">        //添加Instrumentation测试依赖</div><div class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled false</div><div class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    //添加Instrumentation测试依赖</div><div class="line">    packagingOptions &#123;</div><div class="line">        exclude &apos;LICENSE.txt&apos;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)</div><div class="line">    compile &apos;com.android.support:appcompat-v7:26.0.0-alpha1&apos;</div><div class="line">    compile &apos;com.google.android.gms:play-services:4.2.42&apos;</div><div class="line">    testCompile &apos;junit:junit:4.12&apos;</div><div class="line"></div><div class="line">    //添加Instrumentation测试依赖</div><div class="line">    androidTestCompile &apos;com.android.support.test:runner:0.2&apos;</div><div class="line">    androidTestCompile &apos;com.android.support.test:rules:0.2&apos;</div><div class="line">    androidTestCompile &apos;com.android.support.test.espresso:espresso-core:2.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="创建交互页面"><a href="#创建交互页面" class="headerlink" title="创建交互页面"></a>创建交互页面</h2><h3 id="创建xml文件"><a href="#创建xml文件" class="headerlink" title="创建xml文件"></a>创建xml文件</h3><p>首先我们就简单添加一个TextView、EditText、Button，其中onClick的作用相当于button点击之后调用sayHello方法（sayHello在Activity里面定义），布局代码如下<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;</div><div class="line">&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;</div><div class="line">    android:layout_width=&quot;match_parent&quot;</div><div class="line">    android:layout_height=&quot;match_parent&quot;&gt;</div><div class="line"></div><div class="line">    &lt;TextView</div><div class="line">        android:layout_width=&quot;wrap_content&quot;</div><div class="line">        android:layout_height=&quot;wrap_content&quot;</div><div class="line">        android:id=&quot;@+id/textView&quot;</div><div class="line">        android:textColor=&quot;@color/color_green&quot;</div><div class="line">        android:text=&quot;@string/hello_world&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;EditText</div><div class="line">        android:id=&quot;@+id/editText&quot;</div><div class="line">        android:layout_width=&quot;match_parent&quot;</div><div class="line">        android:layout_height=&quot;wrap_content&quot;</div><div class="line">        android:layout_below=&quot;@id/textView&quot;</div><div class="line">        android:textColor=&quot;@color/color_green&quot;</div><div class="line">        android:hint=&quot;Enter your name here&quot;/&gt;</div><div class="line"></div><div class="line">    &lt;Button</div><div class="line">        android:layout_width=&quot;match_parent&quot;</div><div class="line">        android:layout_height=&quot;wrap_content&quot;</div><div class="line">        android:text=&quot;Say hello!&quot;</div><div class="line">        android:layout_below=&quot;@id/editText&quot;</div><div class="line">        android:onClick=&quot;sayHello&quot;/&gt;</div><div class="line">&lt;/RelativeLayout&gt;</div></pre></td></tr></table></figure></p>
+<h3 id="创建Activity"><a href="#创建Activity" class="headerlink" title="创建Activity"></a>创建Activity</h3><p>代码如下<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">/**</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/11/12</div><div class="line"> */</div><div class="line"></div><div class="line">public class InstrumentActivity extends Activity&#123;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    protected void onCreate(@Nullable Bundle savedInstanceState) &#123;</div><div class="line">        super.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_instrumentation);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public void sayHello(View v)&#123;</div><div class="line">        TextView textView = (TextView)findViewById(R.id.textView);</div><div class="line">        EditText editText = (EditText)findViewById(R.id.editText);</div><div class="line">        textView.setText(&quot;Hello,&quot;+editText.getText().toString()+&quot;!&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><h3 id="创建测试类"><a href="#创建测试类" class="headerlink" title="创建测试类"></a>创建测试类</h3><p>找到以（androidTest）后缀结尾的包名并创建一个新的java类，命名格式×××Test，其中类开头必须添加@RunWith（AndroidJunit4.class）和@LargeTest的注解，而@Rule注解是告知需要测试的是哪个类，@Test注解是测试的具体内容，最好复制我导入的包，这样就不会出现其他错误，具体代码如下<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">package com.example.administrator.test;</div><div class="line"></div><div class="line">import android.support.test.rule.ActivityTestRule;</div><div class="line">import android.support.test.runner.AndroidJUnit4;</div><div class="line">import android.test.suitebuilder.annotation.LargeTest;</div><div class="line"></div><div class="line">import com.example.administrator.test.activity.InstrumentActivity;</div><div class="line"></div><div class="line">import org.junit.Rule;</div><div class="line">import org.junit.Test;</div><div class="line">import org.junit.runner.RunWith;</div><div class="line"></div><div class="line">import static android.support.test.espresso.Espresso.onView;</div><div class="line">import static android.support.test.espresso.action.ViewActions.click;</div><div class="line">import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;</div><div class="line">import static android.support.test.espresso.action.ViewActions.typeText;</div><div class="line">import static android.support.test.espresso.assertion.ViewAssertions.matches;</div><div class="line">import static android.support.test.espresso.matcher.ViewMatchers.withId;</div><div class="line">import static android.support.test.espresso.matcher.ViewMatchers.withText;</div><div class="line"></div><div class="line">/**</div><div class="line"> * @author 林思旭</div><div class="line"> * @since 2017/11/13</div><div class="line"> */</div><div class="line"></div><div class="line">@RunWith(AndroidJUnit4.class)</div><div class="line">@LargeTest</div><div class="line">public class InstrumentActvityInstrumentationTest&#123;</div><div class="line"></div><div class="line">    private static final String content = &quot;magic&quot;;</div><div class="line"></div><div class="line">    //需要被测试的UI界面对应的Activity（需要测试的目标）</div><div class="line">    @Rule</div><div class="line">    public ActivityTestRule&lt;InstrumentActivity&gt; mActivityRule = new</div><div class="line">            ActivityTestRule&lt;InstrumentActivity&gt;(InstrumentActivity.class);</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public void sayHello()&#123;</div><div class="line">        onView(withId(R.id.editText)).perform(typeText(&quot;m&quot;));</div><div class="line">        onView(withId(R.id.editText)).perform(typeText(&quot;a&quot;));</div><div class="line">        onView(withId(R.id.editText)).perform(typeText(&quot;g&quot;));</div><div class="line">        onView(withId(R.id.editText)).perform(typeText(&quot;i&quot;));</div><div class="line">        onView(withId(R.id.editText)).perform(typeText(&quot;c&quot;),closeSoftKeyboard());</div><div class="line">        onView(withText(&quot;Say hello!&quot;)).perform(click());</div><div class="line">        String expected = &quot;Hello,&quot;+content+&quot;!&quot;;</div><div class="line">        //检测textView上显示的结果是否和预期想的一样</div><div class="line">        onView(withId(R.id.textView)).check(matches(withText(expected)));</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="语法解析"><a href="#语法解析" class="headerlink" title="语法解析"></a>语法解析</h3><p>onView是一个可以通过id或者内容绑定一个控件的语法；而perform是执行某种操作的语法，如上代码可以看出我是让EdiTText逐个输入magic单词，最后closeSoftKeyboard是关闭软键盘的意思；perform（click（））的意思就是模拟点击操作时间；最后的check语法就是做来作比较，如果和预期值一样测试通过。详细语法大家自己花时间去学习吧！</p>
+<h2 id="如何运行测试"><a href="#如何运行测试" class="headerlink" title="如何运行测试"></a>如何运行测试</h2><p>打开模拟器，右击创建的×××Test.class类<br><img src="http://of90sai8w.bkt.clouddn.com/i_test_one.png" alt="i_test_one"></p>
+<h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><h3 id="测试成功"><a href="#测试成功" class="headerlink" title="测试成功"></a>测试成功</h3><p>测试通过是为绿色，没有出错信息<br><img src="http://of90sai8w.bkt.clouddn.com/i_test_two.png" alt="i_test_two"></p>
+<h3 id="测试失败"><a href="#测试失败" class="headerlink" title="测试失败"></a>测试失败</h3><p>测试不通过为红色，显示出错信息<br><img src="http://of90sai8w.bkt.clouddn.com/i_test_three.png" alt="i_test_three"></p>
+<h2 id="测试过程遇到问题与解决办法"><a href="#测试过程遇到问题与解决办法" class="headerlink" title="测试过程遇到问题与解决办法"></a>测试过程遇到问题与解决办法</h2><h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p><img src="http://of90sai8w.bkt.clouddn.com/i_test_question.png" alt="i_test_question"></p>
+<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p>在gradle（App）里面添加如下代码，代码块添加在android{}里面<br><figure class="highlight plain"><table><tr><td class="code"><pre><div class="line">configurations.all &#123;</div><div class="line">    resolutionStrategy &#123;</div><div class="line">        force &apos;com.android.support:support-annotations:24.1.1&apos;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p>全程测试自动化，测试结束后退出页面<br><img src="http://of90sai8w.bkt.clouddn.com/i_test_show.gif" alt="i_test_show"></p>
+<p>参考链接：<a href="http://www.jianshu.com/p/03118c11c199" target="_blank" rel="external">http://www.jianshu.com/p/03118c11c199</a></p>
+
+                <hr>
+                
+
+                <ul class="pager">
+                    
+                    
+                    <li class="next">
+                        <a href="/2017/11/13/单元测试/" data-toggle="tooltip" data-placement="top"
+                           title="单元测试">Next Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+
+            <div class="hidden-xs col-sm-3 toc-col">
+                <div class="toc-wrap">
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#添加依赖"><span class="toc-text">添加依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#创建交互页面"><span class="toc-text">创建交互页面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建xml文件"><span class="toc-text">创建xml文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#创建Activity"><span class="toc-text">创建Activity</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试"><span class="toc-text">测试</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#创建测试类"><span class="toc-text">创建测试类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#语法解析"><span class="toc-text">语法解析</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何运行测试"><span class="toc-text">如何运行测试</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试结果"><span class="toc-text">测试结果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#测试成功"><span class="toc-text">测试成功</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#测试失败"><span class="toc-text">测试失败</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#测试过程遇到问题与解决办法"><span class="toc-text">测试过程遇到问题与解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#问题"><span class="toc-text">问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-text">解决方法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#效果图"><span class="toc-text">效果图</span></a></li></ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5 class="text-center">
+                        <a href="/tags/">FEATURED TAGS</a>
+                    </h5>
+                    <div class="tags">
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+            </div>
+        </div>
+
+    </div>
+</article>
+
+
+
+
+
+
+<!-- Footer -->
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
+                <br>
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; I Love You 2017
+                    <br>
+                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
+                    <br>
+                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/blog.js"></script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://linsixu.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Google Analytics -->
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- swiftype -->
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install','null','2.0.0');
+</script>
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<!--wechat title img-->
+<img class="wechat-title-img" src="http://of90sai8w.bkt.clouddn.com/1234444.PNG">
+</body>
+
+</html>
