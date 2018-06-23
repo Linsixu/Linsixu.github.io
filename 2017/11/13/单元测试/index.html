@@ -168,11 +168,16 @@
                 <p>最近时间比较多，去接触了一下测试这一块，有部分测试是开发人员必须兼备的能力，那就是单元测试。接下来简单介绍如何进行单元测试。</p>
 <h2 id="添加依赖包"><a href="#添加依赖包" class="headerlink" title="添加依赖包"></a>添加依赖包</h2><p>首先我们要早到androidstudio目录下的lib文件夹，copy junit-4.12.jar包到项目的libs文件夹下，然后右键Add As Library。或者直接在build.gradle文件下的dependencies添加如下依赖：testCompile ‘junit:junit:4.12’。</p>
 <h2 id="如何创建测试类"><a href="#如何创建测试类" class="headerlink" title="如何创建测试类"></a>如何创建测试类</h2><p>在Project视图下的app/src/main/java中生成需要测试类，在类中写入需要测试的方法，然后选择该类名字右键 -&gt; Go To -&gt; Test<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_one.png" alt="unit_test_one"></p>
-<h2 id="创建测试类说明事项"><a href="#创建测试类说明事项" class="headerlink" title="创建测试类说明事项"></a>创建测试类说明事项</h2><p>然后创建的Test类在Android视图中的app/java文件夹中有个(androidTest)后缀名的包中出现<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_two.png" alt="unit_test_two"></p>
+<h2 id="创建测试类说明事项"><a href="#创建测试类说明事项" class="headerlink" title="创建测试类说明事项"></a>创建测试类说明事项</h2><p>创建Test类时候需要勾选的东西如图所示<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_two.png" alt="unit_test_two"></p>
+<p>然后创建的Test类后会出现一个框说是将该类放在哪个文件夹中，这时候需要注意，放错有可以会导致问题出现。具体文件夹介绍如图所示<br><img src="http://of90sai8w.bkt.clouddn.com/remind1.png" alt="remind1"></p>
 <h2 id="如何进行测试"><a href="#如何进行测试" class="headerlink" title="如何进行测试"></a>如何进行测试</h2><p>在创建的Test类中的Before修饰的方法里面实例化被测试类，在需要测试的方法体里面写上相关内容进行验证，进行单元测试前需要开启模拟器或者连接手机。其中Assert.assertEquals(预期值,实际值,误差值)。<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_three.png" alt="unit_test_three"></p>
 <h2 id="测试结果"><a href="#测试结果" class="headerlink" title="测试结果"></a>测试结果</h2><h3 id="测试成功"><a href="#测试成功" class="headerlink" title="测试成功"></a>测试成功</h3><p>成功运行，进度条为绿色<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_five.png" alt="unit_test_five"></p>
 <h3 id="测试失败"><a href="#测试失败" class="headerlink" title="测试失败"></a>测试失败</h3><p>失败运行，进度条为红色，会给出失败的详细原因<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_six.png" alt="unit_test_six"></p>
-<h2 id="测试途中遇到的问题"><a href="#测试途中遇到的问题" class="headerlink" title="测试途中遇到的问题"></a>测试途中遇到的问题</h2><p>点击单独运行sum方法会出现错误信息，原因是因为该CaculatorTest类没有继承TestCase类，只要继承TestCase类后就解决了该问题。出错信息如图下所示<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_question.png" alt="unit_test_question"></p>
+<h2 id="测试途中遇到的问题"><a href="#测试途中遇到的问题" class="headerlink" title="测试途中遇到的问题"></a>测试途中遇到的问题</h2><ol>
+<li>点击单独运行sum方法会出现错误信息，原因是因为该CaculatorTest类没有继承TestCase类，只要继承TestCase类后就解决了该问题。出错信息如图下所示<br><img src="http://of90sai8w.bkt.clouddn.com/unit_test_question.png" alt="unit_test_question"></li>
+<li>进行单元测试过程中出现了<strong>java.lang.ClassNotFoundException</strong>错误，百度以后找不到解决办法，睡醒以后才发觉可能自己放错文件夹了。<br>出错信息如图下所示<br><img src="http://of90sai8w.bkt.clouddn.com/quetion2.png" alt="quetion2"></li>
+</ol>
+<p>错误原因:在生成Junit单元测试类时候放在了Instrument测试类的文件夹上，下面是来自两个文件夹的解释<br><img src="http://of90sai8w.bkt.clouddn.com/remind2.png" alt="remind2"></p>
 
                 <hr>
                 
@@ -261,7 +266,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; I Love You 2017
+                    Copyright &copy; I Love You 2018
                     <br>
                     <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
                     <br>
